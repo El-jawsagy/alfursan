@@ -1,14 +1,18 @@
-import 'package:al_fursan/view/main_app_screens/about_us_screen.dart';
-import 'package:al_fursan/view/main_app_screens/contact_us_screen.dart';
-import 'package:al_fursan/view/login_screen.dart';
-import 'package:al_fursan/view/mainscreen.dart';
-import 'package:al_fursan/view/utilities/models_data.dart';
-import 'package:al_fursan/view/utilities/preferences.dart';
-import 'package:al_fursan/view/utilities/widgets.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
+import 'package:al_fursan/utilities/SimilarWidgets.dart';
+import 'package:al_fursan/utilities/preferences.dart';
+import 'package:al_fursan/utilities/utilities_screen/about_us_screen.dart';
+import 'package:al_fursan/contact_us/contact_us_screen.dart';
 
-void main() => runApp(SetYouLanguage());
+import 'package:al_fursan/main_app_screens/mainscreen.dart';
+import 'package:al_fursan/utilities/models_data.dart';
+
+import 'package:flutter/material.dart';
+
+import 'authentication/login_screen.dart';
+
+void main() {
+  runApp(SetYouLanguage());
+}
 
 class SetYouLanguage extends StatefulWidget {
   @override
@@ -47,42 +51,36 @@ class _SetItState extends State<SetIt> {
           maxHeight: MediaQuery.of(context).size.height,
         ),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.darkWithOpen1BG,
-              AppColors.darkWithOpen2BG,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: AppColors.witheBG,
         ),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _drawLoginButton("English"),
-            giveSpace(.2, context),
-            _drawLoginButton("العربية"),
+            _drawLoginButton("English", "assets/images/uk.png"),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .2,
+            ),
+            _drawLoginButton("العربية", "assets/images/eg.png"),
           ],
         ),
       ),
     );
   }
 
-  Widget _drawLoginButton(String language) {
+  Widget _drawLoginButton(String language, String image) {
     return InkWell(
       onTap: () async {
         if (language == "العربية") {
-          Navigator.pop(context);
           Preferences.setLanguage(true);
-          Navigator.push(
+          Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => Fursan()));
         }
+
         if (language == "English") {
-          Navigator.pop(context);
           Preferences.setLanguage(false);
-          Navigator.push(
+          Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => Fursan()));
         }
       },
@@ -100,18 +98,31 @@ class _SetItState extends State<SetIt> {
           ],
           borderRadius: BorderRadius.circular(50),
           gradient:
-              LinearGradient(colors: [AppColors.witheBG, AppColors.witheBG]),
+              LinearGradient(colors: [AppColors.darkBG, AppColors.darkBG]),
         ),
         child: Center(
-          child: Text(
-            language,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              fontFamily: "elmessiri",
-              color: AppColors.darkBG,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Text(
+                language,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  fontFamily: "elmessiri",
+                  color: AppColors.witheBG,
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * .1,
+                height: MediaQuery.of(context).size.height * .03,
+                child: Image.asset(
+                  image,
+                  fit: BoxFit.cover,
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -127,41 +138,43 @@ class Fursan extends StatefulWidget {
 class _FursanState extends State<Fursan> {
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        // @pop is function to make us navigation from screen to home android screen system
-        return pop();
-      },
-      child: FutureBuilder(
-          future: Preferences.getLanguage(),
-          builder: (context, snapshots) {
-            if (snapshots.hasData) {
-              return GestureDetector(
-                onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(context);
+    return FutureBuilder(
+        future: Preferences.getLanguage(),
+        builder: (context, snapshots) {
+          if (snapshots.hasData) {
+            return GestureDetector(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
 
-                  if (!currentFocus.hasPrimaryFocus) {
-                    currentFocus.unfocus();
-                  }
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+              },
+              child: MaterialApp(
+                routes: {
+                  '/home': (context) => MainScreen(snapshots.data, 0),
+                  '/tours': (context) => MainScreen(snapshots.data, 1),
+                  '/aboutUs': (context) => AboutUsScreen(snapshots.data),
+                  '/contactUs': (context) => ContactUsScreen(snapshots.data),
+                  '/login': (context) => LoginScreen(snapshots.data),
+                  '/visa': (context) => MainScreen(snapshots.data, 2),
                 },
-                child: MaterialApp(
-                  routes: {
-                    '/home': (context) => MainScreen(snapshots.data),
-                    '/aboutUs': (context) => AboutUsScreen(snapshots.data),
-                    '/contactUs': (context) => ContactUsScreen(snapshots.data),
-                    '/login': (context) => LoginScreen(snapshots.data),
+                debugShowCheckedModeBanner: false,
+                home: WillPopScope(
+                  onWillPop: () {
+                    // @pop is function to make us navigation from screen to home android screen system
+                    return pop();
                   },
-                  debugShowCheckedModeBanner: false,
-                  home: OpeningWidget(snapshots.data),
-                  theme: ThemeData(
-                    primaryColor: AppColors.darkBG,
-                  ),
+                  child: OpeningWidget(snapshots.data),
                 ),
-              );
-            }
-            return Container();
-          }),
-    );
+                theme: ThemeData(
+                  primaryColor: AppColors.darkBG,
+                ),
+              ),
+            );
+          }
+          return Container();
+        });
   }
 }
 
@@ -186,10 +199,10 @@ class _OpeningWidgetState extends State<OpeningWidget> {
         future: Preferences.getToken(),
         builder: (context, snapshotsChildren) {
           if (snapshotsChildren.hasData) {
-            return MainScreen(widget.language);
+            return MainScreen(widget.language, 0);
+          } else {
+            return LoginScreen(widget.language);
           }
-
-          return LoginScreen(widget.language);
         });
   }
 
