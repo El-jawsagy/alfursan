@@ -9,10 +9,9 @@ class AllToursApi {
   //todo: is finished
   Future<List<Tour>> fetchAllTours() async {
     await checkInternetConnection();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String token = prefs.getString('token');
-    String URL = ApiPaths.getAllTours(token);
+    String URL = ApiPaths.getAllTours(
+        "hVF4CVDlbuUg18MmRZBA4pDkzuXZi9Rzm5wYvSPtxvF8qa8CK9GiJqMXdAMv");
     http.Response response = await http.get(URL);
     List<Tour> tours = [];
 

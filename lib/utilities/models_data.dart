@@ -8,7 +8,7 @@ class AppThemes {
 
 class AppColors {
   static const Color witheBG = Colors.white;
-
+  static const Color grey = Colors.grey;
   static const Color darkBG = Color(0xff01082F);
 
   static const Color darkWithOpen1BG = Color(0xff614ad3);

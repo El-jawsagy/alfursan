@@ -195,15 +195,7 @@ class _OpeningWidgetState extends State<OpeningWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: Preferences.getToken(),
-        builder: (context, snapshotsChildren) {
-          if (snapshotsChildren.hasData) {
-            return MainScreen(widget.language, 0);
-          } else {
-            return LoginScreen(widget.language);
-          }
-        });
+    return MainScreen(widget.language, 0);
   }
 
   @override

@@ -1,7 +1,5 @@
-import 'dart:math';
 
 import 'package:al_fursan/contact_us/contact_us_api.dart';
-import 'package:al_fursan/utilities/models_data.dart';
 import 'package:al_fursan/utilities/models_data.dart' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -238,8 +236,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               widget.language
                   ? Text(
                       widget.language
-                          ? "من فضلك اضغط على زر من اعلى"
-                          : "press one of button up",
+                          ? " من فضلك يرجى اختيار خيار واحد"
+                          : "please select one choice",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -255,8 +253,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               !widget.language
                   ? Text(
                       widget.language
-                          ? "من فضلك اضغط على زر من اعلى"
-                          : "press one of button up",
+                          ? " من فضلك يرجى اختيار خيار واح "
+                          : "please select one choice",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -380,7 +378,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     return null;
                   });
                 } catch (E) {
-                  _showToast(context,E.toString());
+                  _showToast(context, E.toString());
                 }
               }
             },

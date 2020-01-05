@@ -21,7 +21,8 @@ class AllVisaScreen extends StatefulWidget {
 class _AllVisaScreenState extends State<AllVisaScreen> {
   VisaApi allVisaApi = VisaApi();
 
-  SimilarWidgets similarWidgets =SimilarWidgets();
+  SimilarWidgets similarWidgets = SimilarWidgets();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +67,7 @@ class _AllVisaScreenState extends State<AllVisaScreen> {
                     List<Visa> allVisa = snapShot.data;
                     return _drawVisa(allVisa);
                   } else if (!snapShot.hasData) {
-                    return similarWidgets.noData(context, 0.85, .35);
+                    return similarWidgets.noData(context,"NO DATA", 0.85, .35);
                   }
                 }
                 break;
@@ -95,15 +96,17 @@ class _AllVisaScreenState extends State<AllVisaScreen> {
                 ),
               );
             },
-            child: Stack(
-              overflow: Overflow.visible,
+            child: Column(
               children: <Widget>[
                 Center(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(9.0),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(9),
+                      topRight: Radius.circular(9),
+                    ),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.of(context).size.height * 0.30,
                       child: (ourVisa[pos].image == null)
                           ? Image.asset(
                               "assets/images/new-logo.png",
@@ -129,22 +132,25 @@ class _AllVisaScreenState extends State<AllVisaScreen> {
                 Center(
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.05,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(9)),
                     child: Center(
                       child: Container(
-                        width: MediaQuery.of(context).size.width * .4,
-                        height: MediaQuery.of(context).size.height * .08,
+                        margin: EdgeInsets.all(2),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.05,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
                           gradient: LinearGradient(
                             colors: [
-                              AppColors.darkShadow,
-                              AppColors.darkShadow,
+                              AppColors.darkBG,
+                              AppColors.darkBG,
                             ],
                           ),
-                          color: AppColors.witheBG,
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(9),
+                            bottomLeft: Radius.circular(9),
+                          ),
                         ),
                         child: Center(
                           child: Text(

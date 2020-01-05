@@ -90,7 +90,7 @@ class SimilarWidgets {
             dotsCount: length,
             position: value.ceilToDouble(),
             decorator: DotsDecorator(
-              color: AppColors.witheBG,
+              color: AppColors.grey,
               activeColor: AppColors.darkBG,
               size: const Size.square(9.0),
               activeSize: const Size(18.0, 9.0),
@@ -123,12 +123,13 @@ class SimilarWidgets {
     );
   }
 
-  Widget noData(BuildContext context, double width, double height) {
+  Widget noData(
+      BuildContext context, String title, double width, double height) {
     return Container(
       width: MediaQuery.of(context).size.width * width,
       height: MediaQuery.of(context).size.height * height,
       child: Center(
-        child: Text("NO DATA"),
+        child: Text(title),
       ),
     );
   }

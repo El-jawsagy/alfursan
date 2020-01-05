@@ -8,6 +8,8 @@ class Tour {
   String informationEn;
   String programAr;
   String programEn;
+  String offerAR;
+  String offerEn;
   int ticketSinglePrice;
   int ticketTreblePrice;
   int ticketChd2Price;
@@ -19,6 +21,8 @@ class Tour {
     this.slug,
     this.nameEn,
     this.nameAr,
+    this.offerAR,
+    this.offerEn,
     this.imageName,
     this.informationAr,
     this.informationEn,
@@ -36,6 +40,8 @@ class Tour {
     this.slug = jsonObject['slug'];
     this.nameEn = jsonObject['name_en'];
     this.nameAr = jsonObject['name_ar'];
+    this.offerAR = jsonObject['offer_title_ar'];
+    this.offerEn = jsonObject['offer_title_en'];
     this.imageName = jsonObject['image_name'];
     this.informationAr = jsonObject['info_ar'];
     this.informationEn = jsonObject['info_en'];

@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
       },
       child: Scaffold(
         appBar:
-            _drawAppBar(widget.language ? "الفرسان ترافيل" : "AlFursan Tarvel"),
+            _drawAppBar(widget.language ? "شركة الفرسان" : "AlFursan Tarvel"),
         drawer: DrawerScreen(widget.language),
         body: _drawPageScrollable(),
         bottomNavigationBar: _drawNavigationBottomBar(),

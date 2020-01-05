@@ -8,9 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class VisaApi {
   Future<List<Visa>> fetchVisa() async {
     await checkInternetConnection();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString('token');
-    String URL = ApiPaths.getAllVisaApi(token);
+    String URL = ApiPaths.getAllVisaApi("hVF4CVDlbuUg18MmRZBA4pDkzuXZi9Rzm5wYvSPtxvF8qa8CK9GiJqMXdAMv");
 
     http.Response response = await http.get(URL);
 

@@ -19,7 +19,7 @@ class ToursOfCategoriesScreen extends StatefulWidget {
 }
 
 class _ToursOfCategoriesScreenState extends State<ToursOfCategoriesScreen> {
-  AllCategoryTourApi allCategoryTourApi = AllCategoryTourApi();
+//  AllCategoryTourApi allCategoryTourApi = AllCategoryTourApi();
   SimilarWidgets similarWidgets = SimilarWidgets();
 
   @override
@@ -47,7 +47,7 @@ class _ToursOfCategoriesScreenState extends State<ToursOfCategoriesScreen> {
                 ),
                 fit: BoxFit.cover)),
         child: FutureBuilder(
-          future: allCategoryTourApi.fetchAllTours(widget.slug),
+//          future: allCategoryTourApi.fetchAllTours(widget.slug),
           builder: (BuildContext context, AsyncSnapshot snapShot) {
             switch (snapShot.connectionState) {
               case ConnectionState.none:
@@ -78,7 +78,7 @@ class _ToursOfCategoriesScreenState extends State<ToursOfCategoriesScreen> {
                     List<Tour> tours = snapShot.data;
                     return _drawTrendingTours(tours);
                   } else if (!snapShot.hasData) {
-                    return similarWidgets.noData(context, 0.85, .35);
+                    return similarWidgets.noData(context,"NO DATA", 0.85, .35);
                   }
                 }
                 break;

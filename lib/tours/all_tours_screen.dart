@@ -65,7 +65,7 @@ class _AllToursScreenState extends State<AllToursScreen> {
                     List<Tour> allTour = snapShot.data;
                     return _drawTour(allTour);
                   } else if (!snapShot.hasData) {
-                    return similarWidgets.noData(context, 0.85, .35);
+                    return similarWidgets.noData(context,"NO DATA", 0.85, .35);
                   }
                 }
                 break;
@@ -94,15 +94,17 @@ class _AllToursScreenState extends State<AllToursScreen> {
                 ),
               );
             },
-            child: Stack(
-              overflow: Overflow.visible,
+            child: Column(
               children: <Widget>[
                 Center(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(9.0),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(9),
+                      topRight: Radius.circular(9),
+                    ),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.of(context).size.height * 0.25,
                       child: (ourTours[pos].imageName == null)
                           ? Image.asset(
                               "assets/images/new-logo.png",
@@ -127,10 +129,21 @@ class _AllToursScreenState extends State<AllToursScreen> {
                 ),
                 Center(
                   child: Container(
+                    margin: EdgeInsets.all(2),
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(9)),
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.darkBG,
+                          AppColors.darkBG,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(9),
+                        bottomLeft: Radius.circular(9),
+                      ),
+                    ),
                     child: Center(
                       child: Container(
                         width: MediaQuery.of(context).size.width * .4,
