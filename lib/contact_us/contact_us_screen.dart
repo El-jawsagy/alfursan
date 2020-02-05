@@ -1,5 +1,5 @@
-
 import 'package:al_fursan/contact_us/contact_us_api.dart';
+import 'package:al_fursan/utilities/SimilarWidgets.dart';
 import 'package:al_fursan/utilities/models_data.dart' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -47,68 +47,48 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _contactUs,
-      appBar: _drawAppBar(widget.language ? "اتصل بنا" : "Contact Us"),
-      body: Builder(
-        builder: (context) => ListView(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width * 0.95,
-              height: MediaQuery.of(context).size.height * 0.15,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  _drawButton(
-                      widget.language ? "الفرع الرئيسي" : "Main Branch"),
-                  _drawButton(
-                      widget.language ? "الفرع الثاني" : "Second Branch"),
-                ],
+      appBar: drawAppBar(
+        widget.language ? "اتصل بنا" : "Contact Us",
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: ExactAssetImage("assets/images/bg-home.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Builder(
+          builder: (context) => ListView(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width * 0.95,
+                height: MediaQuery.of(context).size.height * 0.15,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    _drawButton(
+                        widget.language ? "الفرع الرئيسي" : "Main Branch"),
+                    _drawButton(
+                        widget.language ? "الفرع الثاني" : "Second Branch"),
+                  ],
+                ),
               ),
-            ),
-            (opacityFirst == 1) ? _drawInfoBranch() : _drawEmptyInfo(),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-            _drawFormMassageUs(),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            _drawButtonToSubmitOrReset(),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-          ],
+              (opacityFirst == 1) ? _drawInfoBranch() : _drawEmptyInfo(),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.03,
+              ),
+              _drawFormMassageUs(),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.05,
+              ),
+              _drawButtonToSubmitOrReset(),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
-
-  Widget _drawAppBar(String title) {
-    return AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: ExactAssetImage("assets/images/logo.png"),
-                  fit: BoxFit.cover),
-            ),
-            width: 35,
-            height: 35,
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              fontFamily: 'elmessiri',
-              letterSpacing: 1.1,
-            ),
-          ),
-        ],
-      ),
-      centerTitle: true,
     );
   }
 

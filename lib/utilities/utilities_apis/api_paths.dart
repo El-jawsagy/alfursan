@@ -45,4 +45,13 @@ class ApiPaths {
 
   static String trendingProducts = mainApi + "/trendingtours?token=";
   static String login = mainApi + "/login";
+  static String getImage = mainApi + "/getimages";
+  static String getVideos = mainApi + "/getvideos";
+  static String getNotification = mainApi + "/notifications";
+  static String getNotificationState = mainApi + "/getnotstatus";
+  static String updateNotification(
+    int id,
+  ) {
+    return mainApi + "/notifications/seen/$id";
+  }
 }

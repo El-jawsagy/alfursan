@@ -1,8 +1,8 @@
-import 'package:al_fursan/main.dart';
-import 'package:al_fursan/utilities/models_data.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../models_data.dart';
 import '../preferences.dart';
 
 class DrawerScreen extends StatefulWidget {
@@ -45,7 +45,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   _drawColumnOfButtonsForNav(),
                 ],
               ),
-              _drawButtonToChangeLanguage(),
             ],
           ),
         ),
@@ -112,6 +111,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 title: Text(
                   pages[pos].pageName,
                   style: TextStyle(color: AppColors.witheBG, fontSize: 18),
+                  textAlign: widget.language ? TextAlign.end : TextAlign.start,
                 ),
                 leading: Icon(
                   pages[pos].icon,
@@ -125,57 +125,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ),
           );
         },
-        itemCount: 5,
-      ),
-    );
-  }
-
-  Widget _drawButtonToChangeLanguage() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: InkWell(
-          onTap: () async {
-            widget.language
-                ? await Preferences.setLanguage(false)
-                : await Preferences.setLanguage(true);
-            setState(() {
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => Fursan()));
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Text(
-                    widget.language ? 'English' : 'العربية',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                      fontFamily: "elmessiri",
-                      color: AppColors.witheBG,
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * .1,
-                    height: MediaQuery.of(context).size.height * .03,
-                    child: Image.asset(
-                      widget.language
-                          ? "assets/images/uk.png"
-                          : "assets/images/eg.png",
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
+        itemCount: 6,
       ),
     );
   }

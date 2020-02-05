@@ -1,11 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:al_fursan/utilities/utilities_apis/api_paths.dart';
 import 'package:al_fursan/utilities/utilities_apis/exception_for_app.dart';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
-
 import 'package:path/path.dart';
 
 class UserVisaReservationApi {
@@ -19,12 +15,7 @@ class UserVisaReservationApi {
     String message,
     String tourNameEn,
     String tourNameAr,
-    File image1,
-    File image2,
-    File image3,
-    File image4,
-    File image5,
-    File image6,
+    List<File> images,
   ) async {
     await checkInternetConnection();
     String URL = ApiPaths.userVisaReservation;
@@ -38,25 +29,12 @@ class UserVisaReservationApi {
       'tour_name_en': tourNameEn,
       'tour_name_ar': tourNameAr,
     });
-    if (image1 != null) {
-      formData.add("image1", UploadFileInfo(image1, basename(image1.path)));
-    }
-    if (image2 != null) {
-      formData.add("image2", UploadFileInfo(image2, basename(image2.path)));
-    }
-    if (image3 != null) {
-      formData.add("image3", UploadFileInfo(image3, basename(image3.path)));
-    }
-    if (image4 != null) {
-      formData.add("image4", UploadFileInfo(image4, basename(image4.path)));
-    }
-    if (image5 != null) {
-      formData.add("image5", UploadFileInfo(image5, basename(image5.path)));
+
+    for (var i = 0; i < images.length; i++) {
+      formData.add(
+          "image${i + 1}", UploadFileInfo(images[i], basename(images[i].path)));
     }
 
-    if (image6 != null) {
-      formData.add("image6", UploadFileInfo(image6, basename(image6.path)));
-    }
     Response response = await Dio().post(URL, data: formData);
 
     switch (response.statusCode) {
@@ -65,7 +43,6 @@ class UserVisaReservationApi {
         print(data);
         String state;
         state = data["data"];
-
         return state;
         break;
       case 301:

@@ -1,15 +1,12 @@
-import 'package:al_fursan/category/category_api.dart';
-import 'package:al_fursan/tours/single_tour_screen.dart';
+import 'package:al_fursan/tours/tours_screens/single_tour_screen.dart';
 import 'package:al_fursan/tours/tour.dart';
-import 'package:al_fursan/main_app_screens/trending_tours_api.dart';
+import 'package:al_fursan/home/trending_tours_api.dart';
 import 'package:al_fursan/utilities/SimilarWidgets.dart';
 import 'package:al_fursan/utilities/models_data.dart';
-import 'package:al_fursan/utilities/models_data.dart' as prefix0;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'torus_screeen.dart';
 
 class HomeScreen extends StatefulWidget {
   bool language;
@@ -22,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   ValueNotifier<int> posOfTours = ValueNotifier(0);
-  CategoryApi categoryApi = CategoryApi();
   TrendingToursApi toursApi = TrendingToursApi();
   SimilarWidgets similarWidgets;
 
@@ -100,125 +96,34 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
+              height: MediaQuery.of(context).size.height * 0.04,
             ),
             Container(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.1,
-                  maxWidth: MediaQuery.of(context).size.width * .8,
-                ),
-                child: _drawSocialMedial()),
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.07,
+                maxWidth: MediaQuery.of(context).size.width * .8,
+              ),
+              child: _drawNavigationButton(),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.15,
+            ),
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.08,
+                maxWidth: MediaQuery.of(context).size.width * .8,
+              ),
+              child: _drawSocialMedial(),
+            ),
           ],
         ),
       ),
     );
   }
 
-//  Widget _drawTextCategory() {
-//    return Padding(
-//      padding: const EdgeInsets.all(12.0),
-//      child: Row(
-//        mainAxisAlignment: MainAxisAlignment.center,
-//        children: <Widget>[
-//          Text(
-//            widget.language ? " الاقسام" : "Categories",
-//            style: TextStyle(
-//              fontSize: 22,
-//              fontWeight: FontWeight.bold,
-//              color: prefix0.AppColors.darkBG,
-//            ),
-//          )
-//        ],
-//      ),
-//    );
-//  }
-
-//  Widget _drawCategoriesWithImage(List<Category> categories) {
-//    return Container(
-//      padding: EdgeInsets.only(top: 8),
-//      width: MediaQuery.of(context).size.width * 0.8,
-//      height: MediaQuery.of(context).size.height * 0.4,
-//      child: Stack(
-//        children: <Widget>[
-//          _drawImages(categories),
-//        ],
-//      ),
-//    );
-//  }
-
-//  Widget _drawImages(List<Category> ourCategory) {
-//    return GridView.count(
-//      // Create a grid with 2 columns. If you change the scrollDirection to
-//      // horizontal, this produces 2 rows.
-//      crossAxisCount: 3,
-//      // Generate 100 widgets that display their index in the List.
-//      children: List.generate(
-//        ourCategory.length,
-//        (index) {
-//          return InkWell(
-//            onTap: () {
-//              Navigator.of(context).push(MaterialPageRoute(
-//                  builder: (context) => ToursOfCategoriesScreen(
-//                      widget.language,
-//                      ourCategory[index].catSlug,
-//                      widget.language
-//                          ? ourCategory[index].nameAr
-//                          : ourCategory[index].nameEn)));
-//            },
-//            child: Column(
-//              crossAxisAlignment: CrossAxisAlignment.center,
-//              children: <Widget>[
-//                Expanded(
-//                  flex: 8,
-//                  child: Container(
-//                    width: MediaQuery.of(context).size.width * 0.25,
-//                    height: MediaQuery.of(context).size.height * 0.15,
-//                    margin: EdgeInsets.all(10),
-//                    decoration: BoxDecoration(),
-//                    child: Image(
-//                      loadingBuilder:
-//                          (context, image, ImageChunkEvent loadingProgress) {
-//                        if (loadingProgress == null) {
-//                          return image;
-//                        }
-//                        return Center(
-//                          child: CircularProgressIndicator(),
-//                        );
-//                      },
-//                      image: NetworkImage(
-//                        ourCategory[index].image,
-//                      ),
-//                      fit: BoxFit.fill,
-//                    ),
-//                  ),
-//                ),
-//                Expanded(
-//                  flex: 2,
-//                  child: Container(
-//                    child: Center(
-//                      child: Text(
-//                        (widget.language)
-//                            ? ourCategory[index].nameAr
-//                            : ourCategory[index].nameEn,
-//                        style: TextStyle(
-//                            fontWeight: FontWeight.bold,
-//                            fontSize: 18,
-//                            fontFamily: ""),
-//                      ),
-//                    ),
-//                  ),
-//                ),
-//              ],
-//            ),
-//          );
-//        },
-//      ),
-//    );
-//  }
-
   Widget _drawTextTrending() {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -240,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       padding: EdgeInsets.only(top: 8),
       width: MediaQuery.of(context).size.width * 0.75,
-      height: MediaQuery.of(context).size.height * 0.57,
+      height: MediaQuery.of(context).size.height * 0.5,
       child: Stack(
         children: <Widget>[
           _drawSliderTours(list),
@@ -313,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(1.5),
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.86,
-                      height: MediaQuery.of(context).size.height * 0.26,
+                      height: MediaQuery.of(context).size.height * 0.2,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -341,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'elmessiri',
-                                  color: prefix0.AppColors.witheBG,
+                                  color: AppColors.witheBG,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -354,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'elmessiri',
-                                      color: prefix0.AppColors.witheBG,
+                                      color: AppColors.witheBG,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -378,6 +283,86 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _drawNavigationButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        _drawButtonVisa(),
+        _drawButtonTours(),
+      ],
+    );
+  }
+
+  Widget _drawButtonTours() {
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, '/tours'),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.4,
+        height: MediaQuery.of(context).size.height * 0.05,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                FontAwesomeIcons.globeEurope,
+                size: 30,
+                color: AppColors.darkBG,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .03,
+              ),
+              Text(
+                widget.language ? "الرحلات" : "Tours",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'elmessiri',
+                  color: AppColors.darkBG,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _drawButtonVisa() {
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, '/visa'),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.4,
+        height: MediaQuery.of(context).size.height * 0.05,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.book,
+                size: 30,
+                color: AppColors.darkBG,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .03,
+              ),
+              Text(
+                widget.language ? "تاشيرات" : "Visa",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'elmessiri',
+                  color: AppColors.darkBG,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _drawSocialMedial() {
     return Container(
       width: MediaQuery.of(context).size.width * .8,
@@ -385,10 +370,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _drawSocialImage("whatsapp", "assets/images/watsapp.jpg"),
+          _drawSocialImage("whatsapp", "assets/images/watsapp.png"),
           _drawSocialImage("facebook", "assets/images/facebook.png"),
           _drawSocialImage("skype", "assets/images/skype.png"),
-          _drawSocialImage("insta", "assets/images/insta.jpg"),
+          _drawSocialImage("insta", "assets/images/insta.png"),
           _drawSocialImage("viber", "assets/images/youtube.png"),
         ],
       ),
@@ -422,23 +407,13 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       },
       child: Container(
-        margin: EdgeInsets.all(8),
+        margin: EdgeInsets.all(4),
         width: MediaQuery.of(context).size.width * .13,
         height: MediaQuery.of(context).size.height * 0.06,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(9),
-          color: prefix0.AppColors.witheBG,
-        ),
-        child: Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width * .09,
-            height: MediaQuery.of(context).size.height * 0.045,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(9),
-              image: DecorationImage(
-                  image: ExactAssetImage(image), fit: BoxFit.cover),
-            ),
-          ),
+          image:
+              DecorationImage(image: ExactAssetImage(image), fit: BoxFit.fill),
         ),
       ),
     );
@@ -454,22 +429,22 @@ class _HomeScreenState extends State<HomeScreen> {
   _launchFaceURL(String profile) async {
     var faceBookUrl = "http://facebook.com/$profile";
     await canLaunch(faceBookUrl)
-        ? launch(faceBookUrl,forceSafariVC: false)
-        : showDialogWidget("there is no whatsapp installed", context);
+        ? launch(faceBookUrl, forceSafariVC: false)
+        : showDialogWidget("we found error", context);
   }
 
   _launchInstagramURL(String profile) async {
     var instagramUrl = "https://www.instagram.com/$profile";
     await canLaunch(instagramUrl)
-        ? launch(instagramUrl,forceSafariVC: false)
-        : showDialogWidget("there is no whatsapp installed", context);
+        ? launch(instagramUrl, forceSafariVC: false)
+        : showDialogWidget("we found error ", context);
   }
 
   _launchSkypeURL() async {
     var instagramUrl = "https://join.skype.com/invite/cffyill8yTns ";
     await canLaunch(instagramUrl)
-        ? launch(instagramUrl,forceSafariVC: false)
-        : showDialogWidget("we found error to", context);
+        ? launch(instagramUrl, forceSafariVC: false)
+        : showDialogWidget("we found error", context);
   }
 
   _launchViperURL(String phone) async {

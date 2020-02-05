@@ -4,14 +4,10 @@ import 'package:al_fursan/tours/reservation_tour/user_tour_reservation_api.dart'
 import 'package:al_fursan/utilities/models_data.dart';
 import 'package:al_fursan/utilities/utilities_apis/exception_for_app.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
-File image1;
-File image2;
-File image3;
-File image4;
-File image5;
-File image6;
+List<File> images = [];
 
 class UserTourReservationScreen extends StatefulWidget {
   bool language;
@@ -46,7 +42,7 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
     addressController = TextEditingController();
     messageController = TextEditingController();
     userTourReservationApi = UserTourReservationApi();
-
+    images.clear();
     super.initState();
   }
 
@@ -57,64 +53,72 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
       key: _userReservationUs,
       appBar:
           _drawAppBar(widget.language ? "ارسل معلومات " : "Send  Information"),
-      body: Builder(
-        builder: (context) => ListView(
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
-            _drawFormMassageUs(),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                DrawTakerImageBox(
-                    widget.language ? "صورة جوز السفر" : "Passport Image"),
-                DrawTakerImageBox(
-                    widget.language ? "صورة الهوية" : "Identity Image"),
-              ],
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                DrawTakerImageBox(widget.language
-                    ? "صورة شهادة الميلاد"
-                    : "birth certificate"),
-                DrawTakerImageBox(widget.language
-                    ? "الصورة الاضافية الاولي"
-                    : "The first additional image"),
-              ],
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                DrawTakerImageBox(widget.language
-                    ? "الصورة الاضافيةالثانية"
-                    : "The second additional picture"),
-                DrawTakerImageBox(widget.language
-                    ? "الصورة الاضافية الثالثة"
-                    : "The third additional picture"),
-              ],
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            _drawButtonToSubmitOrReset(),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-          ],
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            getImage();
+          });
+        },
+        backgroundColor: AppColors.darkBG,
+        child: Icon(FontAwesomeIcons.image),
+      ),
+      body: ListView(
+        children: <Widget>[
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.03,
+          ),
+          _drawFormMassageUs(),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.02,
+          ),
+          images.length == 0
+              ? Container(
+                  child: Center(
+                    child: Text(
+                      widget.language
+                          ? "من فضلك ادخل صورة الهوية و صورة جواز السفر و صورة شهادة الميلاد لكل شخص"
+                          : "Please enter the id photo, passport photo and birth certificate for everyone",
+                      style: TextStyle(
+                        fontFamily: 'elmessiri',
+                        letterSpacing: 1.1,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
+              : Container(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.35,
+                  ),
+                  child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemCount: images.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return DrawTakerImageBox(
+                          images[index],
+                        );
+                      }),
+                ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
+          ),
+          _drawButtonToSubmitOrReset(),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.02,
+          ),
+        ],
       ),
     );
+  }
+
+  Future getImage() async {
+    var newImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      newImage != null ? images.add(newImage) : null;
+    });
   }
 
   Widget _drawAppBar(String title) {
@@ -155,6 +159,7 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
         child: Column(
           children: <Widget>[
             _drawEditText(
+              widget.language,
               textController: nameInArabicController,
               lines: 1,
               title:
@@ -167,6 +172,7 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             _drawEditText(
+              widget.language,
               textController: nameInEnglishController,
               lines: 1,
               title: widget.language
@@ -180,6 +186,7 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             _drawEditText(
+              widget.language,
               textController: emailController,
               lines: 1,
               title: widget.language ? "البريد الالكتروني" : "Email",
@@ -191,6 +198,7 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             _drawEditText(
+              widget.language,
               textController: phoneController,
               lines: 1,
               title: widget.language ? "رقم الهاتف" : "Phone Number",
@@ -202,6 +210,7 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             _drawEditText(
+              widget.language,
               textController: addressController,
               lines: 1,
               title: widget.language ? "العنوان" : "Address",
@@ -213,12 +222,13 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
               height: MediaQuery.of(context).size.height * 0.02,
             ),
             _drawEditText(
+              widget.language,
               textController: messageController,
               lines: 6,
               title: widget.language ? "ملحوظات" : "Notes",
               massageError: widget.language
-                  ? "من فضلك قم بكتابة الاشخاص الذي تريد اصطحابهم معك / او اذا كان لديك اى ملاحظات"
-                  : "Please Enter You Message",
+                  ? "من فضلك اذا لم يكن لديك اى ملاحظات اكتب لا يوجد"
+                  : "Please if you don't have any notes type 'none'.",
             ),
           ],
         ),
@@ -226,7 +236,8 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
     );
   }
 
-  Widget _drawEditText({
+  Widget _drawEditText(
+    bool language, {
     int lines,
     TextEditingController textController,
     String title,
@@ -236,8 +247,10 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
       controller: textController,
       decoration: InputDecoration(
           labelText: title,
+          alignLabelWithHint: true,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
       maxLines: lines,
+      textAlign: (language == true ? TextAlign.end : TextAlign.start),
       validator: (val) {
         if (val.isEmpty) {
           return massageError;
@@ -262,21 +275,15 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
                 try {
                   await userTourReservationApi
                       .sendUserReservation(
-                    nameInArabicController.text,
-                    nameInEnglishController.text,
-                    phoneController.text,
-                    emailController.text,
-                    addressController.text,
-                    messageController.text,
-                    widget.tourNameEn,
-                    widget.tourNameAr,
-                    image1,
-                    image2,
-                    image3,
-                    image4,
-                    image5,
-                    image6,
-                  )
+                          nameInArabicController.text,
+                          nameInEnglishController.text,
+                          phoneController.text,
+                          emailController.text,
+                          addressController.text,
+                          messageController.text,
+                          widget.tourNameEn,
+                          widget.tourNameAr,
+                          images)
                       .then((val) async {
                     if (val == "true") {
                       setState(() {
@@ -291,12 +298,7 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
                         emailController.clear();
                         phoneController.clear();
                         messageController.clear();
-                        image1 = null;
-                        image2 = null;
-                        image3 = null;
-                        image4 = null;
-                        image5 = null;
-                        image6 = null;
+                        images.clear();
                       });
                     } else {
                       _showToast(
@@ -339,6 +341,7 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
                 emailController.clear();
                 phoneController.clear();
                 messageController.clear();
+                images.clear();
               });
             },
             child: Container(
@@ -381,108 +384,39 @@ class _UserTourReservationScreenState extends State<UserTourReservationScreen> {
     phoneController.dispose();
 
     messageController.dispose();
+
+    images.clear();
+
     super.dispose();
   }
 }
 
 class DrawTakerImageBox extends StatefulWidget {
   File image;
-  String description;
 
-  DrawTakerImageBox(this.description);
+  DrawTakerImageBox(this.image);
 
   @override
   _DrawTakerImageBoxState createState() => _DrawTakerImageBoxState();
 }
 
 class _DrawTakerImageBoxState extends State<DrawTakerImageBox> {
-  Future getImage() async {
-    var newImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      switch (widget.description) {
-        case "صورة جوز السفر":
-        case "Passport Image":
-          image1 = newImage;
-          widget.image = newImage;
-          break;
-        case "صورة الهوية":
-        case "Identity Image":
-          image2 = newImage;
-          widget.image = newImage;
-          break;
-        case "صورة شهادة الميلاد":
-        case "birth certificate":
-          image3 = newImage;
-          widget.image = newImage;
-          break;
-        case "الصورة الاضافية الاولي":
-        case "The first additional image":
-          image4 = newImage;
-          widget.image = newImage;
-          break;
-        case "الصورة الاضافيةالثانية":
-        case "The second additional picture":
-          image5 = newImage;
-          widget.image = newImage;
-          break;
-        case "الصورة الاضافية الثالثة":
-
-        case "The third additional picture":
-          image5 = newImage;
-          widget.image = newImage;
-          break;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        setState(() {
-          getImage();
-        });
-      },
-      child: (widget.image == null)
-          ? Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * .45,
-                maxHeight: MediaQuery.of(context).size.height * .15,
-              ),
-              width: MediaQuery.of(context).size.width * .45,
-              height: MediaQuery.of(context).size.height * .15,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      widget.description,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : Container(
-              width: MediaQuery.of(context).size.width * .45,
-              height: MediaQuery.of(context).size.height * .15,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(7.0),
-                child: Image.file(
-                  widget.image,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+      onTap: () {},
+      child: Container(
+        padding: EdgeInsets.all(10),
+        width: MediaQuery.of(context).size.width * .45,
+        height: MediaQuery.of(context).size.height * .15,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(7.0),
+          child: Image.file(
+            widget.image,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
     );
   }
 }

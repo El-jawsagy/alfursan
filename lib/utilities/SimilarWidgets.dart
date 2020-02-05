@@ -160,7 +160,18 @@ class SimilarWidgets {
 //
 
 }
-
+Widget drawAppBar(String title) {
+  return AppBar(
+    title: Text(
+      title,
+      style: TextStyle(
+        fontFamily: 'elmessiri',
+        letterSpacing: 1.1,
+      ),
+    ),
+    centerTitle: true,
+  );
+}
 Future<void> pop() async {
   await SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
 }

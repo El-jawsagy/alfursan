@@ -1,14 +1,17 @@
+import 'package:al_fursan/notification/notification_api.dart';
+import 'package:al_fursan/tours/tours_screens/all_tours_screen.dart';
 import 'package:al_fursan/utilities/SimilarWidgets.dart';
+import 'package:al_fursan/utilities/models_data.dart';
 import 'package:al_fursan/utilities/preferences.dart';
 import 'package:al_fursan/utilities/utilities_screen/about_us_screen.dart';
-import 'package:al_fursan/contact_us/contact_us_screen.dart';
-
-import 'package:al_fursan/main_app_screens/mainscreen.dart';
-import 'package:al_fursan/utilities/models_data.dart';
-
+import 'package:al_fursan/visa/visa_screens/visa_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-import 'authentication/login_screen.dart';
+import 'contact_us/contact_us_screen.dart';
+import 'gallery/gallery_screen.dart';
+import 'home/mainscreen.dart';
+import 'notification/notification_Screen.dart';
 
 void main() {
   runApp(SetYouLanguage());
@@ -20,6 +23,14 @@ class SetYouLanguage extends StatefulWidget {
 }
 
 class _SetYouLanguageState extends State<SetYouLanguage> {
+  var bloc = BlocHome();
+
+  @override
+  void initState() {
+    bloc.initOneSignal();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,6 +47,20 @@ class _SetYouLanguageState extends State<SetYouLanguage> {
   }
 }
 
+class BlocHome {
+  void initOneSignal() async {
+    await OneSignal.shared.init(
+      "3579a84e-0611-47d5-9c64-e6bf8fc91610",
+      iOSSettings: {
+        OSiOSSettings.autoPrompt: false,
+        OSiOSSettings.inAppLaunchUrl: true,
+      },
+    );
+    OneSignal.shared
+        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+  }
+}
+
 class SetIt extends StatefulWidget {
   @override
   _SetItState createState() => _SetItState();
@@ -43,90 +68,14 @@ class SetIt extends StatefulWidget {
 
 class _SetItState extends State<SetIt> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width,
-          maxHeight: MediaQuery.of(context).size.height,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.witheBG,
-        ),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _drawLoginButton("English", "assets/images/uk.png"),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .2,
-            ),
-            _drawLoginButton("العربية", "assets/images/eg.png"),
-          ],
-        ),
-      ),
-    );
+  void initState() {
+    Preferences.setLanguage(true);
+    super.initState();
   }
 
-  Widget _drawLoginButton(String language, String image) {
-    return InkWell(
-      onTap: () async {
-        if (language == "العربية") {
-          Preferences.setLanguage(true);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Fursan()));
-        }
-
-        if (language == "English") {
-          Preferences.setLanguage(false);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Fursan()));
-        }
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width * .7,
-        height: MediaQuery.of(context).size.height * .12,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.blueGrey,
-              blurRadius: .75,
-              spreadRadius: .75,
-              offset: Offset(0.0, 0.0),
-            )
-          ],
-          borderRadius: BorderRadius.circular(50),
-          gradient:
-              LinearGradient(colors: [AppColors.darkBG, AppColors.darkBG]),
-        ),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Text(
-                language,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  fontFamily: "elmessiri",
-                  color: AppColors.witheBG,
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * .1,
-                height: MediaQuery.of(context).size.height * .03,
-                child: Image.asset(
-                  image,
-                  fit: BoxFit.cover,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+  @override
+  Widget build(BuildContext context) {
+    return Fursan();
   }
 }
 
@@ -152,12 +101,14 @@ class _FursanState extends State<Fursan> {
               },
               child: MaterialApp(
                 routes: {
-                  '/home': (context) => MainScreen(snapshots.data, 0),
-                  '/tours': (context) => MainScreen(snapshots.data, 1),
+                  '/home': (context) => MainScreen(snapshots.data),
+                  '/tours': (context) => AllToursScreen(snapshots.data),
                   '/aboutUs': (context) => AboutUsScreen(snapshots.data),
                   '/contactUs': (context) => ContactUsScreen(snapshots.data),
-                  '/login': (context) => LoginScreen(snapshots.data),
-                  '/visa': (context) => MainScreen(snapshots.data, 2),
+                  '/visa': (context) => AllVisaScreen(snapshots.data),
+                  '/gallery': (context) => GalleryScreen(snapshots.data),
+                  '/notification': (context) =>
+                      NotificationsScreen(snapshots.data),
                 },
                 debugShowCheckedModeBanner: false,
                 home: WillPopScope(
@@ -188,6 +139,8 @@ class OpeningWidget extends StatefulWidget {
 }
 
 class _OpeningWidgetState extends State<OpeningWidget> {
+  NotificationApi notificationApi = NotificationApi();
+
   @override
   initState() {
     super.initState();
@@ -195,7 +148,30 @@ class _OpeningWidgetState extends State<OpeningWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return MainScreen(widget.language, 0);
+    return FutureBuilder(
+        future: notificationApi.getNotificationStatus(),
+        builder: (BuildContext context, AsyncSnapshot snapShot) {
+          switch (snapShot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return MainScreen(widget.language);
+              break;
+            case ConnectionState.active:
+            case ConnectionState.done:
+              if (snapShot.hasError) {
+                return MainScreen(widget.language);
+              } else {
+                if (snapShot.hasData) {
+
+                  return MainScreen(widget.language,status: snapShot.data,);
+                } else if (!snapShot.hasData) {
+                  return MainScreen(widget.language);
+                }
+              }
+              break;
+          }
+          return MainScreen(widget.language);
+        });
   }
 
   @override

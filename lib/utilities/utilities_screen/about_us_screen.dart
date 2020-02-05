@@ -1,9 +1,9 @@
-import 'package:al_fursan/utilities/SimilarWidgets.dart';
-import 'package:al_fursan/utilities/models_data.dart' as prefix0;
-
+import 'package:al_fursan/utilities/models_data.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
+import '../SimilarWidgets.dart';
 import 'drawer.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -18,75 +18,48 @@ class AboutUsScreen extends StatefulWidget {
 class _AboutUsScreenState extends State<AboutUsScreen> {
   ValueNotifier<int> posOfAboutUs = ValueNotifier(1);
   int pos;
-  String imageCountry;
   SimilarWidgets similarWidgets;
 
-  String appName;
   List<Map<String, String>> listOfString;
 
   @override
   void initState() {
     pos = 1;
-    imageCountry = "assets/images/uk.png";
     similarWidgets = SimilarWidgets();
-    appName = "معلومات عنا";
-    listOfString = widget.language ? prefix0.aboutUsAr : prefix0.aboutUsEn;
+    listOfString = widget.language ? aboutUsAr : aboutUsEn;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _drawAppBar(widget.language ? "معلومات عنا" : "About Us"),
-      drawer: DrawerScreen(widget.language),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(top: 8),
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: MediaQuery.of(context).size.height * 0.8,
-            child: Stack(children: <Widget>[
-              _drawCardsOfAbout(),
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: similarWidgets.drawDots(
-                    pos: posOfAboutUs,
-                    length: listOfString.length,
-                  )),
-            ]),
-          )
-        ],
+      appBar: drawAppBar(widget.language ? "معلومات عنا" : "About Us"),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: ExactAssetImage("assets/images/bg-home.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ListView(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(top: 8),
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.8,
+              child: Stack(children: <Widget>[
+                _drawCardsOfAbout(),
+                Align(
+                    alignment: Alignment.bottomCenter,
+                    child: similarWidgets.drawDots(
+                      pos: posOfAboutUs,
+                      length: listOfString.length,
+                    )),
+              ]),
+            )
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget _drawAppBar(String title) {
-    return AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: ExactAssetImage("assets/images/logo.png"),
-                  fit: BoxFit.cover),
-            ),
-            width: 35,
-            height: 35,
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              fontFamily: 'elmessiri',
-              letterSpacing: 1.1,
-            ),
-          ),
-        ],
-      ),
-      centerTitle: true,
     );
   }
 
@@ -111,7 +84,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   width: MediaQuery.of(context).size.width * 0.87,
                   height: MediaQuery.of(context).size.height * 0.8,
                   decoration: BoxDecoration(
-                      color: prefix0.AppColors.darkWithOpen2BG,
+                      color: AppColors.darkWithOpen2BG,
                       borderRadius: BorderRadius.circular(9)),
                   child: Column(
                     children: <Widget>[
@@ -121,7 +94,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                           page['Title'],
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: prefix0.AppColors.witheBG,
+                              color: AppColors.witheBG,
                               fontSize: 20),
                         ),
                       ),
@@ -133,7 +106,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         child: Text(
                           page['description'],
                           style: TextStyle(
-                              color: prefix0.AppColors.witheBG,
+                              color: AppColors.witheBG,
                               fontFamily: 'elmessiri',
                               fontSize: 16),
                           textAlign: TextAlign.center,

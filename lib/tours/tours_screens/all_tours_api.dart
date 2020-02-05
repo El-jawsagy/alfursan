@@ -3,24 +3,24 @@ import 'package:al_fursan/tours/tour.dart';
 import 'package:al_fursan/utilities/utilities_apis/api_paths.dart';
 import 'package:al_fursan/utilities/utilities_apis/exception_for_app.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-class TrendingToursApi {
+class AllToursApi {
   //todo: is finished
-  Future<List<Tour>> fetchTours() async {
+  Future<List<Tour>> fetchAllTours() async {
     await checkInternetConnection();
-    String URL = ApiPaths.trendingProducts;
-    http.Response response = await http.get(
-        URL + "hVF4CVDlbuUg18MmRZBA4pDkzuXZi9Rzm5wYvSPtxvF8qa8CK9GiJqMXdAMv");
+
+    String URL = ApiPaths.getAllTours(
+        "hVF4CVDlbuUg18MmRZBA4pDkzuXZi9Rzm5wYvSPtxvF8qa8CK9GiJqMXdAMv");
+    http.Response response = await http.get(URL);
     List<Tour> tours = [];
 
     switch (response.statusCode) {
       case 200:
         var data = jsonDecode(response.body);
-        print(response.body);
+
         for (var item in data['data']) {
-          print('before add');
           tours.add(Tour.fromJson(item));
-          print(tours[0].nameEn);
         }
         return tours;
         break;

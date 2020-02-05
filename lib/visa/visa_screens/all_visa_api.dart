@@ -1,29 +1,26 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 
 import 'package:al_fursan/utilities/utilities_apis/api_paths.dart';
 import 'package:al_fursan/utilities/utilities_apis/exception_for_app.dart';
+import 'package:al_fursan/visa/visa.dart';
+import 'package:http/http.dart' as http;
 
-
-class ContactUsApi {
-  Future<String> sendData(
-    String senderName,
-    String senderPhoneNumber,
-    String senderEmailAddress,
-    String message,
-  ) async {
+class VisaApi {
+  Future<List<Visa>> fetchVisa() async {
     await checkInternetConnection();
-    String URL = ApiPaths.getContactUs(
-        senderName, senderPhoneNumber, senderEmailAddress, message);
+    String URL = ApiPaths.getAllVisaApi("hVF4CVDlbuUg18MmRZBA4pDkzuXZi9Rzm5wYvSPtxvF8qa8CK9GiJqMXdAMv");
+
     http.Response response = await http.get(URL);
-    String isSending;
-    print(response.statusCode);
+
+    List<Visa> allVisa = [];
     switch (response.statusCode) {
       case 200:
         var data = jsonDecode(response.body);
-        isSending = data['data'];
-        print(isSending);
-        return isSending;
+        for (var item in data['data']) {
+          allVisa.add(Visa.fromJson(item));
+        }
+        return allVisa;
         break;
       case 301:
       case 302:
@@ -36,7 +33,9 @@ class ContactUsApi {
       case 500:
         throw NoConnectionWithServer();
         break;
+      default:
+        return null;
+        break;
     }
-    return "false";
   }
 }

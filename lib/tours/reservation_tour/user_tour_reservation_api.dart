@@ -9,21 +9,15 @@ import 'package:path/path.dart';
 class UserTourReservationApi {
   //todo: is finished
   Future<String> sendUserReservation(
-    String nameInArabic,
-    String nameInEnglish,
-    String phoneNumber,
-    String emailAddress,
-    String address,
-    String message,
-    String tourNameEn,
-    String tourNameAr,
-    File image1,
-    File image2,
-    File image3,
-    File image4,
-    File image5,
-    File image6,
-  ) async {
+      String nameInArabic,
+      String nameInEnglish,
+      String phoneNumber,
+      String emailAddress,
+      String address,
+      String message,
+      String tourNameEn,
+      String tourNameAr,
+      List<File> images,) async {
     await checkInternetConnection();
     String URL = ApiPaths.userToursReservation;
 
@@ -39,24 +33,9 @@ class UserTourReservationApi {
         'tour_name_ar': tourNameAr,
       },
     );
-    if (image1 != null) {
-      formData.add("image1", UploadFileInfo(image1, basename(image1.path)));
-    }
-    if (image2 != null) {
-      formData.add("image2", UploadFileInfo(image2, basename(image2.path)));
-    }
-    if (image3 != null) {
-      formData.add("image3", UploadFileInfo(image3, basename(image3.path)));
-    }
-    if (image4 != null) {
-      formData.add("image4", UploadFileInfo(image4, basename(image4.path)));
-    }
-    if (image5 != null) {
-      formData.add("image5", UploadFileInfo(image5, basename(image5.path)));
-    }
-
-    if (image6 != null) {
-      formData.add("image6", UploadFileInfo(image6, basename(image6.path)));
+    for (var i = 0; i < images.length; i++) {
+      formData.add(
+          "image${i + 1}", UploadFileInfo(images[i], basename(images[i].path)));
     }
 
     Response response = await Dio().post(URL, data: formData);

@@ -12,7 +12,7 @@ class AppColors {
   static const Color darkBG = Color(0xff01082F);
 
   static const Color darkWithOpen1BG = Color(0xff614ad3);
-
+  static const Color blueToWhite = Color(0xffEDF2FA);
   static const Color darkWithOpen2BG = Color(0xff01082F);
 
   static const Color shadow = Colors.black12;
@@ -43,6 +43,8 @@ List<Page> allAppPages(bool language) {
       FontAwesomeIcons.solidEnvelope));
   pages.add(Page(language ? "معلومات عنا" : "About US", '/aboutUs',
       FontAwesomeIcons.solidQuestionCircle));
+  pages.add(Page(language ? "معرض" : "Gallery", '/gallery',
+      FontAwesomeIcons.photoVideo));
   return pages;
 }
 
