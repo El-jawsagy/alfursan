@@ -1,4 +1,4 @@
-class Tour {
+class Offer {
   int id;
   String slug;
   String nameEn;
@@ -16,36 +16,38 @@ class Tour {
   int ticketChd2Price;
   int ticketChd6Price;
   int ticketInfantPrice;
+  String visaPrice;
   String includeAr;
   String includeEn;
   String excludeAr;
   String excludeEn;
 
-  Tour(
-    this.id,
-    this.slug,
-    this.nameEn,
-    this.nameAr,
-    this.offerAR,
-    this.offerEn,
-    this.imageName,
-    this.informationAr,
-    this.informationEn,
-    this.programAr,
-    this.programEn,
-    this.file,
-    this.ticketSinglePrice,
-    this.ticketTreblePrice,
-    this.ticketChd2Price,
-    this.ticketChd6Price,
-    this.ticketInfantPrice,
-    this.excludeAr,
-    this.excludeEn,
-    this.includeAr,
-    this.includeEn,
-  );
+  Offer(
+      this.id,
+      this.slug,
+      this.nameEn,
+      this.nameAr,
+      this.offerAR,
+      this.offerEn,
+      this.imageName,
+      this.informationAr,
+      this.informationEn,
+      this.programAr,
+      this.programEn,
+      this.file,
+      this.ticketSinglePrice,
+      this.ticketTreblePrice,
+      this.ticketChd2Price,
+      this.ticketChd6Price,
+      this.ticketInfantPrice,
+      this.visaPrice,
+      this.excludeAr,
+      this.excludeEn,
+      this.includeAr,
+      this.includeEn,
+      );
 
-  Tour.fromJson(Map<String, dynamic> jsonObject) {
+  Offer.fromJson(Map<String, dynamic> jsonObject) {
     this.id = jsonObject['id'];
     this.slug = jsonObject['slug'];
     this.nameEn = jsonObject['name_en'];
@@ -57,15 +59,16 @@ class Tour {
     this.informationEn = jsonObject['info_en'];
     this.programAr = jsonObject['program_ar'];
     this.programEn = jsonObject['program_en'];
-    this.file = jsonObject['file'];
+    this.file =jsonObject['file'];
     this.ticketSinglePrice = jsonObject['tkt_single_price'];
     this.ticketTreblePrice = jsonObject['tkt_trible_price'];
     this.ticketChd2Price = jsonObject['tkt_chd2_price'];
     this.ticketChd6Price = jsonObject['tkt_chd6_price'];
     this.ticketInfantPrice = jsonObject['tkt_enf_price'];
-    this.includeAr = jsonObject['include_ar'];
-    this.includeEn = jsonObject['exclude_ar'];
-    this.excludeAr = jsonObject['exclude_ar'];
-    this.excludeAr = jsonObject['exclude_en'];
+    this.visaPrice =jsonObject['price'];
+    this.includeAr =jsonObject['include_ar'];
+    this.includeEn =jsonObject['exclude_ar'];
+    this.excludeAr =jsonObject['exclude_ar'];
+    this.excludeAr =jsonObject['exclude_en'];
   }
 }

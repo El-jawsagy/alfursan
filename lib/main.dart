@@ -1,4 +1,5 @@
 import 'package:al_fursan/notification/notification_api.dart';
+import 'package:al_fursan/offer/offer_screen.dart';
 import 'package:al_fursan/tours/tours_screens/all_tours_screen.dart';
 import 'package:al_fursan/utilities/SimilarWidgets.dart';
 import 'package:al_fursan/utilities/models_data.dart';
@@ -109,6 +110,7 @@ class _FursanState extends State<Fursan> {
                   '/gallery': (context) => GalleryScreen(snapshots.data),
                   '/notification': (context) =>
                       NotificationsScreen(snapshots.data),
+                  '/offer':(context)=>AllOfferScreen(snapshots.data),
                 },
                 debugShowCheckedModeBanner: false,
                 home: WillPopScope(
@@ -162,8 +164,10 @@ class _OpeningWidgetState extends State<OpeningWidget> {
                 return MainScreen(widget.language);
               } else {
                 if (snapShot.hasData) {
-
-                  return MainScreen(widget.language,status: snapShot.data,);
+                  return MainScreen(
+                    widget.language,
+                    status: snapShot.data,
+                  );
                 } else if (!snapShot.hasData) {
                   return MainScreen(widget.language);
                 }

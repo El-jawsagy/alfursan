@@ -249,18 +249,24 @@ class _SingleVisaScreenState extends State<SingleVisaScreen> {
 
         if (role == 'admin') {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => UserVisaReservationScreen(widget.language,
-                  widget.singleVisa.nameEn, widget.singleVisa.nameAr)));
+              builder: (context) => UserVisaReservationScreen(
+                  widget.singleVisa.id,
+                  widget.language,
+                  widget.singleVisa.nameEn,
+                  widget.singleVisa.nameAr)));
         } else {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => UserVisaReservationScreen(widget.language,
-                  widget.singleVisa.nameEn, widget.singleVisa.nameAr)));
+              builder: (context) => UserVisaReservationScreen(
+                  widget.singleVisa.id,
+                  widget.language,
+                  widget.singleVisa.nameEn,
+                  widget.singleVisa.nameAr)));
         }
       },
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.darkBG,
-          borderRadius: BorderRadius.circular(8) ,
+          borderRadius: BorderRadius.circular(8),
         ),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 0.06,

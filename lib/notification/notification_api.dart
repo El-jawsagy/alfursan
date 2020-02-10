@@ -46,6 +46,7 @@ class NotificationApi {
       case 200:
         var data = jsonDecode(response.body);
         String result = data['data'];
+        print(result);
         return result;
         break;
       case 301:

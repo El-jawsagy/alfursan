@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'notification.dart';
 import 'notification_api.dart';
+import 'notification_card_screen.dart';
 
 class NotificationsScreen extends StatefulWidget {
   bool language;
@@ -104,8 +105,20 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             await notificationApi
                 .updateNotification(notification.id)
                 .then((val) {
-              Navigator.pushNamed(
-                  context, notification.type == ("tours") ? "/tours" : "/visa");
+                  print(notification.type);
+              notification.type != ("notification")
+                  ? Navigator.pushNamed(
+                      context,
+                      notification.type == ("tours")
+                          ? "/tours"
+                          : (notification.type == ('offer')
+                              ? "/offer"
+                              : "/visa"))
+                  : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              NotificationCard(widget.language, notification)));
             });
           },
           child: widget.language
@@ -119,29 +132,56 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget _drawRowAr(Notifications notification) {
     return Container(
       padding: EdgeInsets.all(10),
+      constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width,
+          maxHeight: MediaQuery.of(context).size.height * .15),
       height: MediaQuery.of(context).size.height * .1,
       width: MediaQuery.of(context).size.width,
       color: notification.seen == "true"
-          ? prefix0.AppColors.witheBG
-          : prefix0.AppColors.blueToWhite,
+          ? prefix0.AppColors.blueToWhite
+          : prefix0.AppColors.witheBG,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Icon(
-            notification.type == ("tours")
-                ? FontAwesomeIcons.plane
-                : FontAwesomeIcons.ccVisa,
-          ),
+          Icon(notification.type == ("tours")
+              ? FontAwesomeIcons.plane
+              : (notification.type == ('offer')
+                  ? Icons.local_offer
+                  : (notification.type == ("visa")
+                      ? FontAwesomeIcons.ccVisa
+                      :Icons.message))),
           Container(
-            child: Text(
-              notification.titleAR,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'elmessiri',
-                color: AppColors.darkBG,
-              ),
-              textAlign: TextAlign.center,
+            constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.79,
+                maxHeight: MediaQuery.of(context).size.height * .12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    notification.titleAR.length >= 35
+                        ? ("... " + notification.titleAR.substring(0, 30))
+                        : notification.titleAR,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'elmessiri',
+                      color: AppColors.darkBG,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Text(
+                  notification.time,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'elmessiri',
+                    color: AppColors.grey,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ],
             ),
           ),
         ],
@@ -152,31 +192,55 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget _drawRowEn(Notifications notification) {
     return Container(
       padding: EdgeInsets.all(10),
-      height: MediaQuery.of(context).size.height * .1,
+      height: MediaQuery.of(context).size.height * .12,
       width: MediaQuery.of(context).size.width,
       color: notification.seen == "true"
-          ? prefix0.AppColors.witheBG
-          : prefix0.AppColors.blueToWhite,
+          ? prefix0.AppColors.blueToWhite
+          : prefix0.AppColors.witheBG,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
-            child: Text(
-              notification.titleEn,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'elmessiri',
-                color: AppColors.darkBG,
-              ),
-              textAlign: TextAlign.center,
+            constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.79,
+                maxHeight: MediaQuery.of(context).size.height * .12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    notification.titleEn.length >= 30
+                        ? ( notification.titleEn.substring(0, 30)+" ... " )
+                        : notification.titleEn,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'elmessiri',
+                      color: AppColors.darkBG,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Text(
+                  notification.time,
+                  style: TextStyle(
+                    fontSize: 12  ,
+                    fontFamily: 'elmessiri',
+                    color: AppColors.grey,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ],
             ),
           ),
-          Icon(
-            notification.type == ("tours")
-                ? FontAwesomeIcons.plane
-                : FontAwesomeIcons.ccVisa,
-          ),
+          Icon(notification.type == ("tours")
+              ? FontAwesomeIcons.plane
+              : (notification.type == ('offer')
+                  ? Icons.local_offer
+                  : (notification.type == ("visa")
+                      ? FontAwesomeIcons.ccVisa
+                      : FontAwesomeIcons.bell))),
         ],
       ),
     );

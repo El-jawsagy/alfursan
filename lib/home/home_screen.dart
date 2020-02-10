@@ -1,6 +1,8 @@
+import 'package:al_fursan/offer/offer.dart';
+import 'package:al_fursan/offer/single_offer_screen.dart';
 import 'package:al_fursan/tours/tours_screens/single_tour_screen.dart';
 import 'package:al_fursan/tours/tour.dart';
-import 'package:al_fursan/home/trending_tours_api.dart';
+import 'package:al_fursan/offer/offer_api.dart';
 import 'package:al_fursan/utilities/SimilarWidgets.dart';
 import 'package:al_fursan/utilities/models_data.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   ValueNotifier<int> posOfTours = ValueNotifier(0);
-  TrendingToursApi toursApi = TrendingToursApi();
+  OfferApi toursApi = OfferApi();
   SimilarWidgets similarWidgets;
 
   @override
@@ -73,9 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     } else {
                       if (snapShot.hasData) {
-                        List<Tour> tours = snapShot.data;
-                        if (tours != null) {
-                          return _drawTrendingTours(tours);
+                        List<Offer> offer = snapShot.data;
+                        if (offer != null) {
+                          return _drawTrendingTours(offer);
                         } else {
                           return similarWidgets.noData(
                               context,
@@ -141,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _drawTrendingTours(List<Tour> list) {
+  Widget _drawTrendingTours(List<Offer> list) {
     return Container(
       padding: EdgeInsets.only(top: 8),
       width: MediaQuery.of(context).size.width * 0.75,
@@ -160,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _drawSliderTours(List<Tour> ourTours) {
+  Widget _drawSliderTours(List<Offer> ourOffer) {
     return CarouselSlider(
       initialPage: 1,
       autoPlay: true,
@@ -169,14 +171,14 @@ class _HomeScreenState extends State<HomeScreen> {
         seconds: 10,
       ),
       height: MediaQuery.of(context).size.height * .7,
-      items: ourTours.map((i) {
+      items: ourOffer.map((i) {
         return Builder(
           builder: (BuildContext context) {
             return InkWell(
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => SingleTourScreen(
+                    builder: (context) => SingleOfferScreen(
                       i,
                       widget.language,
                     ),
@@ -210,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               image: NetworkImage(
                                 i.imageName,
                               ),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                             ),
                     ),
                   ),

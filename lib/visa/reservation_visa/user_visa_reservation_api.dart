@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 class UserVisaReservationApi {
   //todo: is finished
   Future<String> sendUserReservation(
+    int id,
     String nameInArabic,
     String nameInEnglish,
     String phoneNumber,
@@ -20,6 +21,7 @@ class UserVisaReservationApi {
     await checkInternetConnection();
     String URL = ApiPaths.userVisaReservation;
     FormData formData = new FormData.from({
+      'visa_id': id,
       'sender_name': nameInArabic,
       'sender_last_name': nameInEnglish,
       'sender_phone_number': phoneNumber,

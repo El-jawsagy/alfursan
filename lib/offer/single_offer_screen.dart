@@ -1,27 +1,27 @@
 import 'package:al_fursan/tours/reservation_tour/user_tour_reservation_screen.dart';
-import 'package:al_fursan/tours/tour.dart';
 import 'package:al_fursan/utilities/SimilarWidgets.dart';
 import 'package:al_fursan/utilities/models_data.dart';
 import 'package:al_fursan/utilities/models_data.dart' as prefix0;
 import 'package:al_fursan/utilities/preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../utilities/models_data.dart';
+import 'offer.dart';
 
-class SingleTourScreen extends StatefulWidget {
+class SingleOfferScreen extends StatefulWidget {
   bool language;
-  Tour singleTour;
+  Offer singleOffer;
 
-  SingleTourScreen(this.singleTour, this.language);
+  SingleOfferScreen(this.singleOffer, this.language);
 
   @override
-  _SingleTourScreenState createState() => _SingleTourScreenState();
+  _SingleOfferScreenState createState() => _SingleOfferScreenState();
 }
 
-class _SingleTourScreenState extends State<SingleTourScreen> {
+class _SingleOfferScreenState extends State<SingleOfferScreen> {
   @override
   void initState() {
     super.initState();
@@ -32,7 +32,9 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.language ? widget.singleTour.nameAr : widget.singleTour.nameEn,
+          widget.language
+              ? widget.singleOffer.nameAr
+              : widget.singleOffer.nameEn,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -58,12 +60,12 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
                 height: MediaQuery.of(context).size.height * 0.35,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: (widget.singleTour.imageName == null)
+                      image: (widget.singleOffer.imageName == null)
                           ? ExactAssetImage(
                               "assets/images/new-logo.png",
                             )
                           : NetworkImage(
-                              widget.singleTour.imageName,
+                              widget.singleOffer.imageName,
                             ),
                       fit: BoxFit.cover),
                   gradient: LinearGradient(
@@ -86,7 +88,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Text(
-                      widget.language ? " التفاصيل" : 'The details',
+                      widget.language ? "التفاصيل" : 'The details',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -106,31 +108,31 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
                 widget.language ? "البرنامج" : "Program",
               ),
               _drawContainerOfProgram(),
-              (widget.singleTour.includeAr != "" &&
-                  widget.singleTour.includeEn != "")
+              (widget.singleOffer.includeAr != "" &&
+                      widget.singleOffer.includeEn != "")
                   ? _drawTitle(
-                widget.language ? "يشمل" : "Include",
-              )
+                      widget.language ? "يشمل" : "Include",
+                    )
                   : Container(),
-              (widget.singleTour.includeAr != "" &&
-                  widget.singleTour.includeEn != "")
+              (widget.singleOffer.includeAr != "" &&
+                      widget.singleOffer.includeEn != "")
                   ? _drawContainerOfInclude()
                   : Container(),
-              (widget.singleTour.excludeEn != "" &&
-                  widget.singleTour.excludeAr != "")
+              (widget.singleOffer.excludeEn != "" &&
+                      widget.singleOffer.excludeAr != "")
                   ? _drawTitle(
-                widget.language ? "لا يشمل" : "Exclude",
-              )
+                      widget.language ? "لا يشمل" : "Exclude",
+                    )
                   : Container(),
-              (widget.singleTour.excludeEn != "" &&
-                  widget.singleTour.excludeAr != "")
+              (widget.singleOffer.excludeEn != "" &&
+                      widget.singleOffer.excludeAr != "")
                   ? _drawContainerOfExclude()
                   : Container(),
               _drawTitle(
                 widget.language ? "الاسعار" : "Prices",
               ),
               _drawAnimatedContainerOfPrice(),
-              _drawPDFButton(widget.singleTour.file),
+              _drawPDFButton(widget.singleOffer.file),
               _drawReserveButton(
                 widget.language ? "احجز الان" : "reserve",
               ),
@@ -169,11 +171,11 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Html(
           data: widget.language
-              ? (widget.singleTour.informationAr != "")
-                  ? widget.singleTour.informationAr
+              ? (widget.singleOffer.informationAr != "")
+                  ? widget.singleOffer.informationAr
                   : ("لا يوجد معلومات فى الوقت الحالي")
-              : (widget.singleTour.informationEn != "")
-                  ? widget.singleTour.informationEn
+              : (widget.singleOffer.informationEn != "")
+                  ? widget.singleOffer.informationEn
                   : ("There's no information right now"),
           defaultTextStyle: TextStyle(
               color: AppColors.darkBG,
@@ -188,18 +190,18 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
   }
 
   Widget _drawContainerOfProgram() {
-    print(widget.singleTour.programAr);
+    print(widget.singleOffer.programAr);
     return Container(
       width: MediaQuery.of(context).size.width * 0.95,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Html(
           data: widget.language
-              ? (widget.singleTour.programAr != "")
-                  ? widget.singleTour.programAr
+              ? (widget.singleOffer.programAr != "")
+                  ? widget.singleOffer.programAr
                   : ("لا يوجد برنامج فى الوقت الحالي")
-              : (widget.singleTour.programEn != "")
-                  ? widget.singleTour.programEn
+              : (widget.singleOffer.programEn != "")
+                  ? widget.singleOffer.programEn
                   : ("There's no program right now"),
           defaultTextStyle: TextStyle(
             color: AppColors.darkBG,
@@ -215,18 +217,18 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
   }
 
   Widget _drawContainerOfInclude() {
-    print(widget.singleTour.programAr);
+    print(widget.singleOffer.programAr);
     return Container(
       width: MediaQuery.of(context).size.width * 0.95,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Html(
           data: widget.language
-              ? (widget.singleTour.includeAr != "")
-                  ? widget.singleTour.includeAr
+              ? (widget.singleOffer.includeAr != "")
+                  ? widget.singleOffer.includeAr
                   : ("لا يوجد برنامج فى الوقت الحالي")
-              : (widget.singleTour.includeEn != "")
-                  ? widget.singleTour.includeEn
+              : (widget.singleOffer.includeEn != "")
+                  ? widget.singleOffer.includeEn
                   : ("There's no program right now"),
           defaultTextStyle: TextStyle(
             color: AppColors.darkBG,
@@ -242,18 +244,17 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
   }
 
   Widget _drawContainerOfExclude() {
-    print(widget.singleTour.programAr);
     return Container(
       width: MediaQuery.of(context).size.width * 0.95,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Html(
           data: widget.language
-              ? (widget.singleTour.excludeAr != "")
-                  ? widget.singleTour.excludeAr
+              ? (widget.singleOffer.excludeAr != "")
+                  ? widget.singleOffer.excludeAr
                   : ("لا يوجد برنامج فى الوقت الحالي")
-              : (widget.singleTour.excludeEn != "")
-                  ? widget.singleTour.excludeEn
+              : (widget.singleOffer.excludeEn != "")
+                  ? widget.singleOffer.excludeEn
                   : ("There's no program right now"),
           defaultTextStyle: TextStyle(
             color: AppColors.darkBG,
@@ -275,20 +276,23 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
       child: Container(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: widget.language ? _drawPriceInArabic() : _drawPriceInEnglish(),
+          child: widget.language
+              ? _drawTourPriceInArabic()
+              : _drawTourPriceInEnglish(),
         ),
       ),
     );
   }
 
-  Widget _drawPriceInArabic() {
+  Widget _drawTourPriceInArabic() {
     return ListView(
+      physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Text(
-              widget.singleTour.ticketSinglePrice.toString() + r"$",
+              widget.singleOffer.ticketSinglePrice.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -306,7 +310,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Text(
-              widget.singleTour.ticketTreblePrice.toString() + r"$",
+              widget.singleOffer.ticketTreblePrice.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -324,7 +328,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Text(
-              widget.singleTour.ticketChd2Price.toString() + r"$",
+              widget.singleOffer.ticketChd2Price.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -342,7 +346,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Text(
-              widget.singleTour.ticketChd6Price.toString() + r"$",
+              widget.singleOffer.ticketChd6Price.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -360,7 +364,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Text(
-              widget.singleTour.ticketInfantPrice.toString() + r"$",
+              widget.singleOffer.ticketInfantPrice.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -378,8 +382,9 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
     );
   }
 
-  Widget _drawPriceInEnglish() {
+  Widget _drawTourPriceInEnglish() {
     return ListView(
+      physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -390,7 +395,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
             ),
             Text(
-              widget.singleTour.ticketSinglePrice.toString() + r"$",
+              widget.singleOffer.ticketSinglePrice.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -408,7 +413,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
             ),
             Text(
-              widget.singleTour.ticketTreblePrice.toString() + r"$",
+              widget.singleOffer.ticketTreblePrice.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -426,7 +431,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
             ),
             Text(
-              widget.singleTour.ticketChd2Price.toString() + r"$",
+              widget.singleOffer.ticketChd2Price.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -444,7 +449,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
             ),
             Text(
-              widget.singleTour.ticketChd6Price.toString() + r"$",
+              widget.singleOffer.ticketChd6Price.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -462,7 +467,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
             ),
             Text(
-              widget.singleTour.ticketInfantPrice.toString() + r"$",
+              widget.singleOffer.ticketInfantPrice.toString() + r"$",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -472,6 +477,25 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget _drawVisaPrice() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            widget.singleOffer.visaPrice.toString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                color: AppColors.darkWithOpen1BG),
+          ),
+        ],
+      ),
     );
   }
 
@@ -522,11 +546,11 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
         if (role == 'admin') {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => UserTourReservationScreen(widget.language,
-                  widget.singleTour.nameEn, widget.singleTour.nameAr)));
+                  widget.singleOffer.nameEn, widget.singleOffer.nameAr)));
         } else {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => UserTourReservationScreen(widget.language,
-                  widget.singleTour.nameEn, widget.singleTour.nameAr)));
+                  widget.singleOffer.nameEn, widget.singleOffer.nameAr)));
         }
       },
       child: Container(

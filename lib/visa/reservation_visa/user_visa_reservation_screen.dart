@@ -13,8 +13,10 @@ class UserVisaReservationScreen extends StatefulWidget {
   bool language;
   String tourNameAr;
   String tourNameEn;
+  int id;
 
-  UserVisaReservationScreen(this.language, this.tourNameAr, this.tourNameEn);
+  UserVisaReservationScreen(
+      this.id, this.language, this.tourNameAr, this.tourNameEn);
 
   @override
   _UserVisaReservationScreenState createState() =>
@@ -276,6 +278,7 @@ class _UserVisaReservationScreenState extends State<UserVisaReservationScreen> {
                 try {
                   await userVisaReservationApi
                       .sendUserReservation(
+                          widget.id,
                           nameInArabicController.text,
                           nameInEnglishController.text,
                           phoneController.text,

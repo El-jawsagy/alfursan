@@ -11,7 +11,7 @@ class MainScreen extends StatefulWidget {
   bool language;
   String status;
 
-  MainScreen(this.language, {this.status ='false'});
+  MainScreen(this.language, {this.status = 'false'});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -34,8 +34,8 @@ class _MainScreenState extends State<MainScreen> {
         return pop();
       },
       child: Scaffold(
-        appBar: _drawAppBar(
-            widget.status, widget.language ? "الفرسان" : "AlFursan ", widget.language),
+        appBar: _drawAppBar(widget.status,
+            widget.language ? "الفرسان" : "AlFursan ", widget.language),
         drawer: DrawerScreen(widget.language),
         body: HomeScreen(widget.language),
       ),
@@ -70,12 +70,15 @@ class _MainScreenState extends State<MainScreen> {
       ),
       centerTitle: true,
       actions: <Widget>[
-        IconButton(
-            icon: Icon(
-              Icons.notifications_active,
-              color: status == 'true' ? Colors.red : Colors.white,
-            ),
-            onPressed: () => Navigator.pushNamed(context, '/notification')),
+        Center(
+          child: IconButton(
+              icon: Icon(
+                Icons.notifications_active,
+                color: status == 'true' ? Colors.red : Colors.white,
+              ),
+              onPressed: () =>
+                  Navigator.pushNamed(context, '/notification')),
+        ),
         Container(
           padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           child: InkWell(
@@ -91,14 +94,8 @@ class _MainScreenState extends State<MainScreen> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width * .08,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * .01,
+                width: MediaQuery.of(context).size.width * .08,
+                height: MediaQuery.of(context).size.height * .01,
                 child: Image.asset(
                   language ? "assets/images/uk.png" : "assets/images/eg.png",
                   fit: BoxFit.fill,
