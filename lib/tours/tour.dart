@@ -66,6 +66,6 @@ class Tour {
     this.includeAr = jsonObject['include_ar'];
     this.includeEn = jsonObject['exclude_ar'];
     this.excludeAr = jsonObject['exclude_ar'];
-    this.excludeAr = jsonObject['exclude_en'];
+    this.excludeEn = jsonObject['exclude_en'];
   }
 }

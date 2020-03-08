@@ -134,16 +134,8 @@ class SimilarWidgets {
     );
   }
 
-  Widget error(
-      BuildContext context, String error, double width, double height) {
-    return Container(
-      width: MediaQuery.of(context).size.width * width,
-      height: MediaQuery.of(context).size.height * height,
-      child: Center(
-        child: Text(error),
-      ),
-    );
-  }
+
+
 
   Widget noConnection(BuildContext context, double width, double height) {
     return Container(

@@ -4,10 +4,14 @@ import 'package:al_fursan/utilities/models_data.dart';
 import 'package:al_fursan/utilities/utilities_apis/exception_for_app.dart';
 import 'package:al_fursan/visa/reservation_visa/user_visa_reservation_api.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
-List<File> images = [];
+File image1;
+File image2;
+File image3;
+File image4;
+File image5;
+File image6;
 
 class UserVisaReservationScreen extends StatefulWidget {
   bool language;
@@ -44,7 +48,6 @@ class _UserVisaReservationScreenState extends State<UserVisaReservationScreen> {
     addressController = TextEditingController();
     messageController = TextEditingController();
     userVisaReservationApi = UserVisaReservationApi();
-    images.clear();
     super.initState();
   }
 
@@ -55,15 +58,6 @@ class _UserVisaReservationScreenState extends State<UserVisaReservationScreen> {
       key: _userVisaReservationUs,
       appBar:
           _drawAppBar(widget.language ? "ارسل معلومات " : "Send  Information"),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            getImage();
-          });
-        },
-        backgroundColor: AppColors.darkBG,
-        child: Icon(FontAwesomeIcons.image),
-      ),
       body: ListView(
         padding: EdgeInsets.only(bottom: 60),
         children: <Widget>[
@@ -74,54 +68,44 @@ class _UserVisaReservationScreenState extends State<UserVisaReservationScreen> {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.02,
           ),
-          images.length == 0
-              ? Container(
-                  child: Center(
-                    child: Text(
-                      widget.language
-                          ? "من فضلك ادخل صورة الهوية و صورة جواز السفر و صورة شهادة الميلاد لكل شخص"
-                          : "Please enter the id photo, passport photo and birth certificate for everyone",
-                      style: TextStyle(
-                        fontFamily: 'elmessiri',
-                        letterSpacing: 1.1,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )
-              : Container(
-                  constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.35,
-                  ),
-                  child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      itemCount: images.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return DrawTakerImageBox(
-                          images[index],
-                        );
-                      }),
+          Container(
+            child: Center(
+              child: Text(
+                widget.language
+                    ? "من فضلك ادخل صورة الهوية و صورة جواز السفر و صورة شخصية لكل شخص"
+                    : "Please enter the ID, passport photo and personal photograph of each person",
+                style: TextStyle(
+                  fontFamily: 'elmessiri',
+                  letterSpacing: 1.1,
                 ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.72,
+            ),
+            child: GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemCount: 6,
+                itemBuilder: (BuildContext context, int index) {
+                  return DrawTakerImageBox(
+                    widget.language,
+                    index,
+                  );
+                }),
+          ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.05,
           ),
           _drawButtonToSubmitOrReset(),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.02,
-          ),
         ],
       ),
     );
-  }
-
-  Future getImage() async {
-    var newImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      newImage != null ? images.add(newImage) : null;
-    });
   }
 
   Widget _drawAppBar(String title) {
@@ -278,16 +262,22 @@ class _UserVisaReservationScreenState extends State<UserVisaReservationScreen> {
                 try {
                   await userVisaReservationApi
                       .sendUserReservation(
-                          widget.id,
-                          nameInArabicController.text,
-                          nameInEnglishController.text,
-                          phoneController.text,
-                          emailController.text,
-                          addressController.text,
-                          messageController.text,
-                          widget.tourNameEn,
-                          widget.tourNameAr,
-                          images)
+                    widget.id,
+                    nameInArabicController.text,
+                    nameInEnglishController.text,
+                    phoneController.text,
+                    emailController.text,
+                    addressController.text,
+                    messageController.text,
+                    widget.tourNameEn,
+                    widget.tourNameAr,
+                    image1,
+                    image2,
+                    image3,
+                    image4,
+                    image5,
+                    image6,
+                  )
                       .then((val) async {
                     print(val);
                     if (val == "true") {
@@ -295,15 +285,20 @@ class _UserVisaReservationScreenState extends State<UserVisaReservationScreen> {
                         _showToast(
                             context,
                             widget.language
-                                ? "تم الحجز بنجاح"
-                                : 'Your Visa Reservation has sent');
+                                ? "تم استلام طلبك و سيتم اللرد عليك من قبل الموظف المسؤل"
+                                : 'Your request has been received and will be answered by the responsible officer');
                         nameInEnglishController.clear();
                         nameInArabicController.clear();
                         addressController.clear();
                         emailController.clear();
                         phoneController.clear();
                         messageController.clear();
-                        images.clear();
+                        image1 = null;
+                        image2 = null;
+                        image3 = null;
+                        image4 = null;
+                        image5 = null;
+                        image6 = null;
                       });
                     } else {
                       _showToast(
@@ -346,7 +341,12 @@ class _UserVisaReservationScreenState extends State<UserVisaReservationScreen> {
                 emailController.clear();
                 phoneController.clear();
                 messageController.clear();
-                images.clear();
+                image1 = null;
+                image2 = null;
+                image3 = null;
+                image4 = null;
+                image5 = null;
+                image6 = null;
               });
             },
             child: Container(
@@ -389,37 +389,109 @@ class _UserVisaReservationScreenState extends State<UserVisaReservationScreen> {
     phoneController.dispose();
 
     messageController.dispose();
-    images.clear();
+    image1 = null;
+    image2 = null;
+    image3 = null;
+    image4 = null;
+    image5 = null;
+    image6 = null;
     super.dispose();
   }
 }
 
 class DrawTakerImageBox extends StatefulWidget {
   File image;
+  bool language;
+  int index;
 
-  DrawTakerImageBox(this.image);
+  DrawTakerImageBox(this.language, this.index);
 
   @override
   _DrawTakerImageBoxState createState() => _DrawTakerImageBoxState();
 }
 
 class _DrawTakerImageBoxState extends State<DrawTakerImageBox> {
+  Future getImage() async {
+    var newImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      switch (widget.index) {
+        case 0:
+          image1 = newImage;
+          widget.image = newImage;
+          break;
+        case 1:
+          image2 = newImage;
+          widget.image = newImage;
+          break;
+        case 2:
+          image3 = newImage;
+          widget.image = newImage;
+          break;
+        case 3:
+          image4 = newImage;
+          widget.image = newImage;
+          break;
+        case 4:
+          image5 = newImage;
+          widget.image = newImage;
+          break;
+        case 5:
+          image5 = newImage;
+          widget.image = newImage;
+          break;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
-      child: Container(
-        padding: EdgeInsets.all(10),
-        width: MediaQuery.of(context).size.width * .45,
-        height: MediaQuery.of(context).size.height * .15,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(7.0),
-          child: Image.file(
-            widget.image,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
+      onTap: () {
+        setState(() {
+          getImage();
+        });
+      },
+      child: (widget.image == null)
+          ? Container(
+              margin: EdgeInsets.all(4),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * .45,
+                maxHeight: MediaQuery.of(context).size.height * .09,
+              ),
+              width: MediaQuery.of(context).size.width * .45,
+              height: MediaQuery.of(context).size.height * .09,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(7),
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      widget.language ? "اضافة الصورة" : "Add a picture",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Container(
+              width: MediaQuery.of(context).size.width * .45,
+              height: MediaQuery.of(context).size.height * .09,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(7.0),
+                child: Image.file(
+                  widget.image,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
     );
   }
 }

@@ -110,7 +110,7 @@ class _FursanState extends State<Fursan> {
                   '/gallery': (context) => GalleryScreen(snapshots.data),
                   '/notification': (context) =>
                       NotificationsScreen(snapshots.data),
-                  '/offer':(context)=>AllOfferScreen(snapshots.data),
+                  '/offer': (context) => AllOfferScreen(snapshots.data),
                 },
                 debugShowCheckedModeBanner: false,
                 home: WillPopScope(
@@ -150,32 +150,7 @@ class _OpeningWidgetState extends State<OpeningWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: notificationApi.getNotificationStatus(),
-        builder: (BuildContext context, AsyncSnapshot snapShot) {
-          switch (snapShot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.waiting:
-              return MainScreen(widget.language);
-              break;
-            case ConnectionState.active:
-            case ConnectionState.done:
-              if (snapShot.hasError) {
-                return MainScreen(widget.language);
-              } else {
-                if (snapShot.hasData) {
-                  return MainScreen(
-                    widget.language,
-                    status: snapShot.data,
-                  );
-                } else if (!snapShot.hasData) {
-                  return MainScreen(widget.language);
-                }
-              }
-              break;
-          }
-          return MainScreen(widget.language);
-        });
+    return MainScreen(widget.language);
   }
 
   @override

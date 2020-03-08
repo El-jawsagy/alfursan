@@ -23,29 +23,29 @@ class Offer {
   String excludeEn;
 
   Offer(
-      this.id,
-      this.slug,
-      this.nameEn,
-      this.nameAr,
-      this.offerAR,
-      this.offerEn,
-      this.imageName,
-      this.informationAr,
-      this.informationEn,
-      this.programAr,
-      this.programEn,
-      this.file,
-      this.ticketSinglePrice,
-      this.ticketTreblePrice,
-      this.ticketChd2Price,
-      this.ticketChd6Price,
-      this.ticketInfantPrice,
-      this.visaPrice,
-      this.excludeAr,
-      this.excludeEn,
-      this.includeAr,
-      this.includeEn,
-      );
+    this.id,
+    this.slug,
+    this.nameEn,
+    this.nameAr,
+    this.offerAR,
+    this.offerEn,
+    this.imageName,
+    this.informationAr,
+    this.informationEn,
+    this.programAr,
+    this.programEn,
+    this.file,
+    this.ticketSinglePrice,
+    this.ticketTreblePrice,
+    this.ticketChd2Price,
+    this.ticketChd6Price,
+    this.ticketInfantPrice,
+    this.visaPrice,
+    this.excludeAr,
+    this.excludeEn,
+    this.includeAr,
+    this.includeEn,
+  );
 
   Offer.fromJson(Map<String, dynamic> jsonObject) {
     this.id = jsonObject['id'];
@@ -59,16 +59,16 @@ class Offer {
     this.informationEn = jsonObject['info_en'];
     this.programAr = jsonObject['program_ar'];
     this.programEn = jsonObject['program_en'];
-    this.file =jsonObject['file'];
+    this.file = jsonObject['file'];
     this.ticketSinglePrice = jsonObject['tkt_single_price'];
     this.ticketTreblePrice = jsonObject['tkt_trible_price'];
     this.ticketChd2Price = jsonObject['tkt_chd2_price'];
     this.ticketChd6Price = jsonObject['tkt_chd6_price'];
     this.ticketInfantPrice = jsonObject['tkt_enf_price'];
-    this.visaPrice =jsonObject['price'];
-    this.includeAr =jsonObject['include_ar'];
-    this.includeEn =jsonObject['exclude_ar'];
-    this.excludeAr =jsonObject['exclude_ar'];
-    this.excludeAr =jsonObject['exclude_en'];
+    this.visaPrice = jsonObject['price'];
+    this.includeAr = jsonObject['include_ar'];
+    this.includeEn = jsonObject['include_en'];
+    this.excludeAr = jsonObject['exclude_ar'];
+    this.excludeEn = jsonObject['exclude_en'];
   }
 }

@@ -9,9 +9,9 @@ import '../main.dart';
 
 class MainScreen extends StatefulWidget {
   bool language;
-  String status;
 
-  MainScreen(this.language, {this.status = 'false'});
+
+  MainScreen(this.language, );
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -19,7 +19,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   NotificationApi notificationApi = NotificationApi();
-  String status;
+
 
   @override
   initState() {
@@ -34,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
         return pop();
       },
       child: Scaffold(
-        appBar: _drawAppBar(widget.status,
+        appBar: _drawAppBar(
             widget.language ? "الفرسان" : "AlFursan ", widget.language),
         drawer: DrawerScreen(widget.language),
         body: HomeScreen(widget.language),
@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _drawAppBar(String status, String title, bool language) {
+  Widget _drawAppBar( String title, bool language) {
     return AppBar(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -74,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
           child: IconButton(
               icon: Icon(
                 Icons.notifications_active,
-                color: status == 'true' ? Colors.red : Colors.white,
+                color: Colors.white,
               ),
               onPressed: () =>
                   Navigator.pushNamed(context, '/notification')),

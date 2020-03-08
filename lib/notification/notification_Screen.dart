@@ -62,7 +62,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               case ConnectionState.active:
               case ConnectionState.done:
                 if (snapShot.hasError) {
-                  return similarWidgets.error(
+                  return error(
                     context,
                     snapShot.error.toString(),
                     0.85,
@@ -105,7 +105,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             await notificationApi
                 .updateNotification(notification.id)
                 .then((val) {
-                  print(notification.type);
+              print(notification.type);
               notification.type != ("notification")
                   ? Navigator.pushNamed(
                       context,
@@ -132,14 +132,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   Widget _drawRowAr(Notifications notification) {
     return Container(
       padding: EdgeInsets.all(10),
-      constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width,
-          maxHeight: MediaQuery.of(context).size.height * .15),
-      height: MediaQuery.of(context).size.height * .1,
       width: MediaQuery.of(context).size.width,
-      color: notification.seen == "true"
-          ? prefix0.AppColors.blueToWhite
-          : prefix0.AppColors.witheBG,
+      color: prefix0.AppColors.witheBG,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -149,7 +143,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   ? Icons.local_offer
                   : (notification.type == ("visa")
                       ? FontAwesomeIcons.ccVisa
-                      :Icons.message))),
+                      : Icons.message))),
           Container(
             constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * 0.79,
@@ -160,11 +154,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               children: <Widget>[
                 Container(
                   child: Text(
-                    notification.titleAR.length >= 35
-                        ? ("... " + notification.titleAR.substring(0, 30))
-                        : notification.titleAR,
+                    notification.titleAR,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'elmessiri',
                       color: AppColors.darkBG,
@@ -194,9 +186,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       padding: EdgeInsets.all(10),
       height: MediaQuery.of(context).size.height * .12,
       width: MediaQuery.of(context).size.width,
-      color: notification.seen == "true"
-          ? prefix0.AppColors.blueToWhite
-          : prefix0.AppColors.witheBG,
+      color: prefix0.AppColors.witheBG,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -211,7 +201,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 Container(
                   child: Text(
                     notification.titleEn.length >= 30
-                        ? ( notification.titleEn.substring(0, 30)+" ... " )
+                        ? (notification.titleEn.substring(0, 30) + " ... ")
                         : notification.titleEn,
                     style: TextStyle(
                       fontSize: 16,
@@ -225,7 +215,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 Text(
                   notification.time,
                   style: TextStyle(
-                    fontSize: 12  ,
+                    fontSize: 12,
                     fontFamily: 'elmessiri',
                     color: AppColors.grey,
                   ),
@@ -242,6 +232,52 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       ? FontAwesomeIcons.ccVisa
                       : FontAwesomeIcons.bell))),
         ],
+      ),
+    );
+  }
+
+  Widget error(
+      BuildContext context, String error, double width, double height) {
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * width,
+        height: MediaQuery.of(context).size.height * height,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.06,
+                left: MediaQuery.of(context).size.width * 0.06,
+                right: MediaQuery.of(context).size.width * 0.06,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7),
+                image: DecorationImage(
+                    image: ExactAssetImage("assets/images/qm.png"),
+                    fit: BoxFit.fill),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: RaisedButton(
+                onPressed: () {
+                  setState(() {});
+                },
+                color: Colors.red,
+                child: Text(
+                  widget.language ? '!...اعد الاتصال ' : 'Reload...!',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'elmessiri',
+                    color: AppColors.witheBG,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

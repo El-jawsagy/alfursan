@@ -14,10 +14,8 @@ class OfferApi {
     http.Response response = await http.get(
         URL + "hVF4CVDlbuUg18MmRZBA4pDkzuXZi9Rzm5wYvSPtxvF8qa8CK9GiJqMXdAMv");
     List<Offer> offers = [];
-
     switch (response.statusCode) {
       case 200:
-
         var data = jsonDecode(response.body);
         print(data);
         for (var item in data['data']) {

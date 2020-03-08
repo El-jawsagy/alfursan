@@ -37,7 +37,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
         ),
         body: TabBarView(
           children: [
-            ImagesScreen(),
+            ImagesScreen(widget.language),
             VideosScreen(widget.language),
           ],
         ),

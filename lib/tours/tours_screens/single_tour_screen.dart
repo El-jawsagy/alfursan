@@ -106,26 +106,14 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
                 widget.language ? "البرنامج" : "Program",
               ),
               _drawContainerOfProgram(),
-              (widget.singleTour.includeAr != "" &&
-                  widget.singleTour.includeEn != "")
-                  ? _drawTitle(
+              _drawTitle(
                 widget.language ? "يشمل" : "Include",
-              )
-                  : Container(),
-              (widget.singleTour.includeAr != "" &&
-                  widget.singleTour.includeEn != "")
-                  ? _drawContainerOfInclude()
-                  : Container(),
-              (widget.singleTour.excludeEn != "" &&
-                  widget.singleTour.excludeAr != "")
-                  ? _drawTitle(
+              ),
+              _drawContainerOfInclude(),
+              _drawTitle(
                 widget.language ? "لا يشمل" : "Exclude",
-              )
-                  : Container(),
-              (widget.singleTour.excludeEn != "" &&
-                  widget.singleTour.excludeAr != "")
-                  ? _drawContainerOfExclude()
-                  : Container(),
+              ),
+              _drawContainerOfExclude(),
               _drawTitle(
                 widget.language ? "الاسعار" : "Prices",
               ),
@@ -224,10 +212,10 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
           data: widget.language
               ? (widget.singleTour.includeAr != "")
                   ? widget.singleTour.includeAr
-                  : ("لا يوجد برنامج فى الوقت الحالي")
+                  : ("لا يوجد معلومات فى الوقت الحالي")
               : (widget.singleTour.includeEn != "")
                   ? widget.singleTour.includeEn
-                  : ("There's no program right now"),
+                  : ("There's no information right now"),
           defaultTextStyle: TextStyle(
             color: AppColors.darkBG,
             fontWeight: FontWeight.bold,
@@ -251,10 +239,10 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
           data: widget.language
               ? (widget.singleTour.excludeAr != "")
                   ? widget.singleTour.excludeAr
-                  : ("لا يوجد برنامج فى الوقت الحالي")
+                  : ("لا يوجد معلومات فى الوقت الحالي")
               : (widget.singleTour.excludeEn != "")
                   ? widget.singleTour.excludeEn
-                  : ("There's no program right now"),
+                  : ("There's no information right now"),
           defaultTextStyle: TextStyle(
             color: AppColors.darkBG,
             fontWeight: FontWeight.bold,
@@ -283,6 +271,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
 
   Widget _drawPriceInArabic() {
     return ListView(
+      physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -380,6 +369,7 @@ class _SingleTourScreenState extends State<SingleTourScreen> {
 
   Widget _drawPriceInEnglish() {
     return ListView(
+      physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

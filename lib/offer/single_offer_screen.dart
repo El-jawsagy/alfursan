@@ -3,6 +3,7 @@ import 'package:al_fursan/utilities/SimilarWidgets.dart';
 import 'package:al_fursan/utilities/models_data.dart';
 import 'package:al_fursan/utilities/models_data.dart' as prefix0;
 import 'package:al_fursan/utilities/preferences.dart';
+import 'package:al_fursan/visa/reservation_visa/user_visa_reservation_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -105,34 +106,36 @@ class _SingleOfferScreenState extends State<SingleOfferScreen> {
               ),
               _drawContainerOfInfo(),
               _drawTitle(
-                widget.language ? "البرنامج" : "Program",
+                widget.singleOffer.slug == 'tour'
+                    ? (widget.language ? "البرنامج" : "Program")
+                    : (widget.language ? "المتطلبات" : "Requirements"),
               ),
               _drawContainerOfProgram(),
-              (widget.singleOffer.includeAr != "" &&
-                      widget.singleOffer.includeEn != "")
-                  ? _drawTitle(
-                      widget.language ? "يشمل" : "Include",
-                    )
+              (widget.singleOffer.slug == 'tour')
+                  ?  _drawTitle(
+                          widget.language ? "يشمل" : "Include",
+                        )
                   : Container(),
-              (widget.singleOffer.includeAr != "" &&
-                      widget.singleOffer.includeEn != "")
-                  ? _drawContainerOfInclude()
+              (widget.singleOffer.slug == 'tour')
+                  ?  _drawContainerOfInclude()
                   : Container(),
-              (widget.singleOffer.excludeEn != "" &&
-                      widget.singleOffer.excludeAr != "")
-                  ? _drawTitle(
-                      widget.language ? "لا يشمل" : "Exclude",
-                    )
+              (widget.singleOffer.slug == 'tour')
+                  ?  _drawTitle(
+                          widget.language ? "لا يشمل" : "Exclude",
+                        )
                   : Container(),
-              (widget.singleOffer.excludeEn != "" &&
-                      widget.singleOffer.excludeAr != "")
-                  ? _drawContainerOfExclude()
+              (widget.singleOffer.slug == 'tour')
+                  ?  _drawContainerOfExclude()
                   : Container(),
               _drawTitle(
                 widget.language ? "الاسعار" : "Prices",
               ),
-              _drawAnimatedContainerOfPrice(),
-              _drawPDFButton(widget.singleOffer.file),
+              (widget.singleOffer.slug == 'tour')
+                  ? _drawAnimatedContainerOfPrice()
+                  : _drawVisaPrice(),
+              (widget.singleOffer.slug == 'tour')
+                  ? _drawPDFButton(widget.singleOffer.file)
+                  : Container(),
               _drawReserveButton(
                 widget.language ? "احجز الان" : "reserve",
               ),
@@ -225,11 +228,11 @@ class _SingleOfferScreenState extends State<SingleOfferScreen> {
         child: Html(
           data: widget.language
               ? (widget.singleOffer.includeAr != "")
-                  ? widget.singleOffer.includeAr
-                  : ("لا يوجد برنامج فى الوقت الحالي")
+              ? widget.singleOffer.includeAr
+              : ("لا يوجد برنامج فى الوقت الحالي")
               : (widget.singleOffer.includeEn != "")
-                  ? widget.singleOffer.includeEn
-                  : ("There's no program right now"),
+              ? widget.singleOffer.includeEn
+              : ("There's no program right now"),
           defaultTextStyle: TextStyle(
             color: AppColors.darkBG,
             fontWeight: FontWeight.bold,
@@ -244,6 +247,7 @@ class _SingleOfferScreenState extends State<SingleOfferScreen> {
   }
 
   Widget _drawContainerOfExclude() {
+    print(widget.singleOffer.programAr);
     return Container(
       width: MediaQuery.of(context).size.width * 0.95,
       child: Padding(
@@ -251,11 +255,11 @@ class _SingleOfferScreenState extends State<SingleOfferScreen> {
         child: Html(
           data: widget.language
               ? (widget.singleOffer.excludeAr != "")
-                  ? widget.singleOffer.excludeAr
-                  : ("لا يوجد برنامج فى الوقت الحالي")
+              ? widget.singleOffer.excludeAr
+              : ("لا يوجد برنامج فى الوقت الحالي")
               : (widget.singleOffer.excludeEn != "")
-                  ? widget.singleOffer.excludeEn
-                  : ("There's no program right now"),
+              ? widget.singleOffer.excludeEn
+              : ("There's no program right now"),
           defaultTextStyle: TextStyle(
             color: AppColors.darkBG,
             fontWeight: FontWeight.bold,
@@ -541,17 +545,16 @@ class _SingleOfferScreenState extends State<SingleOfferScreen> {
   ) {
     return InkWell(
       onTap: () async {
-        String role = await Preferences.getRole();
-
-        if (role == 'admin') {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => UserTourReservationScreen(widget.language,
-                  widget.singleOffer.nameEn, widget.singleOffer.nameAr)));
-        } else {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => UserTourReservationScreen(widget.language,
-                  widget.singleOffer.nameEn, widget.singleOffer.nameAr)));
-        }
+        widget.singleOffer.slug == 'tour'
+            ? Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => UserTourReservationScreen(widget.language,
+                    widget.singleOffer.nameEn, widget.singleOffer.nameAr)))
+            : Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => UserVisaReservationScreen(
+                    widget.singleOffer.id,
+                    widget.language,
+                    widget.singleOffer.nameEn,
+                    widget.singleOffer.nameAr)));
       },
       child: Container(
         decoration: BoxDecoration(

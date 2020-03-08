@@ -99,7 +99,7 @@ class _SingleVisaScreenState extends State<SingleVisaScreen> {
               ),
               _drawContainerOfInfo(),
               _drawTitle(
-                widget.language ? "المتطلبات" : "requirements",
+                widget.language ? "المتطلبات" : "Requirements",
               ),
               _drawContainerOfProgram(),
               _drawTitle(
@@ -107,7 +107,7 @@ class _SingleVisaScreenState extends State<SingleVisaScreen> {
               ),
               _drawAnimatedContainerOfPrice(),
               _drawReserveButton(
-                widget.language ? "احجز الان" : "reserve",
+                widget.language ? "احجز الان" : "Reserve",
               ),
             ],
           ),

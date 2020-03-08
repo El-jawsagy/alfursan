@@ -60,7 +60,7 @@ class _AllOfferScreenState extends State<AllOfferScreen> {
               case ConnectionState.active:
               case ConnectionState.done:
                 if (snapShot.hasError) {
-                  return similarWidgets.error(
+                  return error(
                     context,
                     snapShot.error.toString(),
                     0.85,
@@ -183,6 +183,49 @@ class _AllOfferScreenState extends State<AllOfferScreen> {
         );
       },
       itemCount: ourOffer.length,
+    );
+  }
+  Widget error(
+      BuildContext context, String error, double width, double height) {
+    return Container(
+      width: MediaQuery.of(context).size.width * width,
+      height: MediaQuery.of(context).size.height * height,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height*0.06,
+              left: MediaQuery.of(context).size.width*0.06,
+              right: MediaQuery.of(context).size.width*0.06,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(7),
+              image: DecorationImage(
+                  image: ExactAssetImage("assets/images/qm.png"),
+                  fit: BoxFit.fill),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: RaisedButton(
+              onPressed: () {
+                setState(() {});
+              },
+              color: Colors.red,
+              child: Text(
+                widget.language ? '!...اعد الاتصال ' : 'Reload...!',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'elmessiri',
+                  color: AppColors.witheBG,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
